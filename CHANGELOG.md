@@ -1,3 +1,8 @@
+[3.0.0]
+-------
+- [ ] Move from callbacks to async/await globally
+
+
 [2.2.2] - 2017-10-13
 --------------------
 - [x] Remove 'debug' level from stderr stream

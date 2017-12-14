@@ -1,13 +1,16 @@
 const path = require('path');
 const EventEmitter = require('events').EventEmitter;
 const fs = require('fs');
-const series = require('async/series');
+const {promisify} = require('util');
 const merge = require('lodash/merge');
 const shortid = require('shortid');
 const forEach = require('lodash/forEach');
-const configLoader = require('ini-config');
+const configLoader = require('yt-config');
 const Module = require('./lib/Module');
 const logger = require('./lib/logger');
+
+
+const readDir = promisify(fs.readdir);
 
 
 module.exports = class extends EventEmitter {
@@ -27,100 +30,38 @@ module.exports = class extends EventEmitter {
         plant._modules = {};
         plant._packageInfo = packageInfo;
         plant._subscribers = [];
-
-        this.readyPromise=new Promise((resolve) =>{
-            plant.on('ready', () =>{
-                resolve();
-            })
-        });
-
-        this.configPromise=new Promise((resolve) =>{
-            plant.on('config', (config) =>{
-                resolve(config);
-            })
-        });
-
-        series([
-
-            function loadConfig(done) {
-                process.stdout.write('  ☢ loading config...');
-                configLoader(plant.config.configFile, (error, config) => {
-                    if (error) return done(error);
-                    console.log('done');
-                    plant.config = merge(plant.config, config);
-                    plant.emit('config', plant.config);
-                    done();
-                });
-            },
-
-            function initNats (done) {
-                done();
-            },
-
-            function loadModules(done) {
-                process.stdout.write('  ☢ loading modules...');
-                const modulesDir = path.join(process.cwd(), plant.config.modulesDir);
-                fs.readdir(modulesDir, (error, moduleDirs) => {
-                    if (error) return done(error);
-                    forEach(moduleDirs, (moduleDir) => {
-                        const modulePath = path.join(modulesDir, moduleDir);
-                        if (!fs.lstatSync(modulePath).isDirectory()) return;
-                        const moduleName = path.basename(modulePath);
-                        plant._modules[moduleName] = new Module(moduleName, modulePath, plant);
-                    });
-                    console.log('done');
-                    done();
-                });
-            },
-
-            function loadSubscribers(done) {
-                process.stdout.write('  ☢ loading subscribers...');
-                const subsDir = path.join(process.cwd(), plant.config.subsDir);
-                fs.readdir(subsDir, (error, subscriberFiles) => {
-                    if (error) return done(error);
-                    forEach(subscriberFiles, (subscriberFile) => {
-                        const subName = path.basename(subscriberFile, '.js');
-                        const requirePath = path.join(subsDir, subscriberFile);
-                        plant._subscribers.push(subName);
-                        let subsWrapper = require(requirePath);
-                        if(typeof subsWrapper === 'object'){
-                            // for ES6 exports
-                            subsWrapper=subsWrapper.default;
-                        }
-                        subsWrapper(plant, logger(plant.name, 'sub', subName));
-                    });
-                    console.log('done');
-                    done();
-                });
-
-            }
-
-        ], function loadDone(error) {
-            if (error) throw error;
-            plant.emit('ready');
-
-            // splash screen
-            const {name, version} = plant._packageInfo;
-            console.log(` `);
-            console.log(`************************************************************************`);
-            console.log(`  🏭 ${plant.name} [${plant.id}] ready:`);
-            console.log(`    > id: ${plant.id}`);
-            console.log(`    > package: ${name}@${version}`);
-            console.log(`    > environment: ${plant.config.environment}`);
-            console.log(`    > subscribers: ${plant._subscribers.join(', ')} (total: ${plant._subscribers.length})`);
-            console.log(`************************************************************************`);
-            console.log(` `);
-
-        });
-
     }
 
-    ready() {
-        return this.readyPromise;
-    }
+    async ready() {
 
-    configReady() {
-        return this.configPromise;
+        const plant = this;
+        process.stdout.write('  ☢ loading config...');
+        const config = await configLoader(plant.config.configFile);
+        plant.config = merge(plant.config, config);
+        console.log('done');
+
+        process.stdout.write('  ☢ loading modules...');
+        const modulesDir = path.join(process.cwd(), plant.config.modulesDir);
+        const moduleDirs = await readDir(modulesDir);
+        forEach(moduleDirs, (moduleDir) => {
+            const modulePath = path.join(modulesDir, moduleDir);
+            if (!fs.lstatSync(modulePath).isDirectory()) return;
+            const moduleName = path.basename(modulePath);
+            plant._modules[moduleName] = new Module(moduleName, modulePath, plant);
+        });
+        console.log('done');
+
+        process.stdout.write('  ☢ loading subscribers...');
+        const subsDir = path.join(process.cwd(), plant.config.subsDir);
+        const subscriberFiles = await readDir(subsDir);
+        forEach(subscriberFiles, (subscriberFile) => {
+            const subName = path.basename(subscriberFile, '.js');
+            const requirePath = path.join(subsDir, subscriberFile);
+            plant._subscribers.push(subName);
+            let subsWrapper = require(requirePath);
+            subsWrapper(plant, logger(plant.name, 'sub', subName));
+        });
+        console.log('done');
     }
 
     set(key, value) {

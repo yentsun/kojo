@@ -1,7 +1,6 @@
 const {assert} = require('chai');
-const {describe, before, it} = require('mocha');
 const sinon = require('sinon');
-const plant = require('./index');
+const Plant = require('./index');
 const pack = require('./package.json');
 
 
@@ -17,8 +16,7 @@ describe('plant', () => {
     let plant;
 
     before(async function() {
-        this.timeout(4000);
-        plant = new plant('test-plant', options, pack);
+        plant = new Plant('test-plant', options, pack);
         await plant.ready();
         nats.config = plant.config.nats;
         plant.set('nats', nats);
