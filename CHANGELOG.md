@@ -1,3 +1,8 @@
+[3.0.2] - 2017-12-15
+--------------------
+- [x] Update readme
+
+
 [3.0.0] - 2017-12-15
 --------------------
 - [x] Move from callbacks to async/await globally fix #1
