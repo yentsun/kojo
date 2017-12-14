@@ -22,30 +22,21 @@ describe('plant', () => {
         plant.set('nats', nats);
     });
 
-    it('loads modules available to each other', (done) => {
+    it('loads modules available to each other', async () => {
         plant.module('alpha').on('aCalled', methodAcalledSpy);
-        plant.module('alpha').methodA([], (error, result) => {
-            assert.equal(result, 'bravo');
-            done();
-        });
+        const result = await plant.module('alpha').methodA([]);
+        assert.equal(result, 'bravo');
     });
 
-    it('enables a module emit an event', (done) => {
+    it('lets modules to emit events', (done) => {
         assert.isTrue(methodAcalledSpy.calledOnce);
         done();
     });
 
-    it('loads config and extras', (done) => {
-        plant.module('alpha').methodB([], (error, nats) => {
-            assert.isTrue(nats.connection);
-            assert.equal(nats.config.host, 'natsHost');
-            done();
-        });
-    });
-
-    it('loads new async style modules (with 2 params)', async function () {
-        const result = await plant.module('charlie').methodA(3);
-        assert.equal(result, 51);
+    it('loads config and extras', async () => {
+        const nats = await plant.module('alpha').methodB();
+        assert.isTrue(nats.connection);
+        assert.equal(nats.config.host, 'natsHost');
     });
 
     it('checks whether plant accessible inside methods (with 2 params)', async function () {
@@ -56,30 +47,10 @@ describe('plant', () => {
 
     it('checks exception logging (with 2 params)', async function () {
         try {
-            const result = await plant.module('charlie').methodA(0);
-        }catch(err){
-            // Just to mark test passed. There will be no need to use it in production. I'll show
+            await plant.module('charlie').methodA();
+        } catch (error) {
+            // Just to mark test passed. You should see the error logged
         }
     });
 
-    // Context approach
-    it('loads new async style modules (with context)', async function () {
-        plant.set('variable', undefined);
-        const result = await plant.module('charlie').nonArrow(3);
-        assert.equal(result, 51);
-    });
-
-    it('checks whether plant accessible inside methods (with context)', async function () {
-        plant.set('variable', 12);
-        const result = await plant.module('charlie').nonArrow(3);
-        assert.equal(result, 36);
-    });
-
-    it('checks exception logging (with context)', async function () {
-        try {
-            const result = await plant.module('charlie').nonArrow(0);
-        }catch(err){
-            // Just to mark test passed. There will be no need to use it in production. I'll show
-        }
-    });
 });

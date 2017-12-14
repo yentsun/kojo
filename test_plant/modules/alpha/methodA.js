@@ -1,14 +1,14 @@
 const assert = require('assert');
 
 
-module.exports = (plant, logger) => {
+module.exports = async function () {
 
-    return (args, done) => {
-        const alpha = plant.module('alpha');
-        const bravo = plant.module('bravo');
-        logger.debug(`called`);
-        assert(typeof alpha.methodB === 'function');
-        alpha.emit('aCalled');
-        bravo.methodA(null, done);
-    }
+    const {plant, logger} = this;
+
+    const alpha = plant.module('alpha');
+    const bravo = plant.module('bravo');
+    logger.debug(`called`);
+    assert(typeof alpha.methodB === 'function');
+    alpha.emit('aCalled');
+    return await bravo.methodA();
 };
