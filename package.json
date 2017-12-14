@@ -1,6 +1,6 @@
 {
   "name": "venture-plant",
-  "version": "2.2.2",
+  "version": "3.0.0",
   "description": "A Node.js event-driven microservice framework",
   "main": "index.js",
   "scripts": {
@@ -16,10 +16,9 @@
   ],
   "author": "Maxim Korinets <mkorinets@gmail.com> (http://korinets.name/)",
   "contributors": [
-    "Dmitriy Pugachev <pugachevdmitry67@gmail.com> (https://github.com/krabradosty)",
     "Alexander @trueshura (https://github.com/trueshura)"
   ],
-  "license": "MIT",
+  "license": "UNLICENSED",
   "bugs": {
     "url": "https://github.com/venture-api/plant/issues"
   },

@@ -1,6 +1,7 @@
-[3.0.0]
--------
+[3.0.0] - 2017-12-15
+--------------------
 - [x] Move from callbacks to async/await globally fix #1
+- [x] Unlicense
 
 
 [2.2.2] - 2017-10-13
