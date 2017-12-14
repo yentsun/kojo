@@ -1,7 +1,7 @@
-module.exports = (plant, logger) => {
+module.exports = async function () {
 
-    return (args, done) => {
-        logger.debug(`called`);
-        done(null, 'bravo');
-    }
+    const {logger} = this;
+
+    logger.debug(`called`);
+    return 'bravo';
 };

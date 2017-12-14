@@ -1,8 +1,8 @@
-module.exports = (plant, logger) => {
+module.exports = async function () {
 
-    return (args, done) => {
-        const nats = plant.get('nats');
-        logger.debug(`called`);
-        done(null, nats);
-    }
+    const {plant, logger} = this;
+
+    const nats = plant.get('nats');
+    logger.debug(`called`);
+    return nats;
 };

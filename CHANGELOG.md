@@ -1,6 +1,7 @@
-[3.0.0]
--------
-- [ ] Move from callbacks to async/await globally
+[3.0.0] - 2017-12-15
+--------------------
+- [x] Move from callbacks to async/await globally fix #1
+- [x] Unlicense
 
 
 [2.2.2] - 2017-10-13
@@ -10,7 +11,7 @@
 
 [2.2.1] - 2017-09-04
 --------------------
-- [x] ADDED splash screen fix #4
+- [x] ADDED splash screen fix
 
 
 [2.1.1] - 2017-07-31
@@ -23,8 +24,8 @@
 --------------------
 - [x] ADDED module getter, extras getter and setter
 - [x] ADDED unit tests
-- [x] ADDED module cross-module calls fix #2
-- [x] ADDED config module fix #1
+- [x] ADDED module cross-module calls
+- [x] ADDED config module fix
 - [x] REMOVED standard js
 
 
