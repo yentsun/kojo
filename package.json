@@ -1,5 +1,5 @@
 {
-  "name": "venture-plant",
+  "name": "@venture-api/plant",
   "version": "3.0.0",
   "description": "A Node.js event-driven microservice framework",
   "main": "index.js",
