@@ -19,18 +19,24 @@ Create a plant:
  
  ```js
 const Plant = require('@venture-api/plant');
+const pg = require('pg'); 
 const pack = require('./package.json');
- 
-const plant = new Plant('plantName', options, pack);
-await plant.ready();
-const {username, password, host, name} = config.pg;
-const pool = new pg.Pool({
-    user: username,
-    database: name,
-    password,
-    host
-});
-plant.set('pg', pool);
+
+async function main() {
+    const plant = new Plant('plantName', options, pack);
+    await plant.ready();
+    const {username, password, host, name} = config.pg;
+    const pool = new pg.Pool({
+        user: username,
+        database: name,
+        password,
+        host
+    });
+    plant.set('pg', pool);
+}
+
+return main();
+
 ```
 
 Create a module's method (`modules/<moduleName>/<methodName>.js`):
