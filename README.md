@@ -23,7 +23,9 @@ const Plant = require('kojo');
 const pg = require('pg'); 
 const pack = require('./package.json');
 
+
 async function main() {
+    
     const plant = new Plant('plantName', options, pack);
     await plant.ready();
     const {username, password, host, name} = config.pg;
