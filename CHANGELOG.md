@@ -1,6 +1,6 @@
-[3.0.4]
--------
-- [ ] Move package to yentsun/plant
+[3.0.4] - 201712-19
+-------------------
+- [x] Move package to yentsun/plant
 
 
 [3.0.2] - 2017-12-15

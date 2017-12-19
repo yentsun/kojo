@@ -1,14 +1,15 @@
-Plant
-=====
+Kojo
+====
 
-A Node.js event-driven microservice framework
+A Node.js event-driven microservice framework. Kōjō (工場) means 'plant' in 
+Japanese.
  
 
 Installation
 ------------
 
 ```
- npm i yt-plant
+ npm i kojo
 ```
 
 
@@ -18,7 +19,7 @@ Usage
 Create a plant:
  
  ```js
-const Plant = require('yt-plant');
+const Plant = require('kojo');
 const pg = require('pg'); 
 const pack = require('./package.json');
 
