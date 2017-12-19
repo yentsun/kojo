@@ -1,14 +1,15 @@
-Venture API Plant
-=================
+Kojo
+====
 
-An event-driven microservice framework powering up Venture API system.
+A Node.js event-driven microservice framework. Kōjō (工場) means 'plant' in 
+Japanese.
  
 
 Installation
 ------------
 
 ```
- npm i @venture-api/plant
+ npm i kojo
 ```
 
 
@@ -18,7 +19,7 @@ Usage
 Create a plant:
  
  ```js
-const Plant = require('@venture-api/plant');
+const Plant = require('kojo');
 const pg = require('pg'); 
 const pack = require('./package.json');
 
