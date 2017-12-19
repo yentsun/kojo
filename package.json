@@ -1,6 +1,6 @@
 {
-  "name": "yt-plant",
-  "version": "3.0.3",
+  "name": "kojo",
+  "version": "3.0.4",
   "description": "A Node.js event-driven microservice framework",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yentsun/plant.git"
+    "url": "git+https://github.com/yentsun/kojo.git"
   },
   "keywords": [
     "event",
@@ -20,9 +20,9 @@
   ],
   "license": "UNLICENSED",
   "bugs": {
-    "url": "https://github.com/yentsun/plant/issues"
+    "url": "https://github.com/yentsun/kojo/issues"
   },
-  "homepage": "https://github.com/yentsun/plant",
+  "homepage": "https://github.com/yentsun/kojo",
   "dependencies": {
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
