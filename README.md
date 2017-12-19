@@ -1,14 +1,14 @@
-Venture API Plant
-=================
+Plant
+=====
 
-An event-driven microservice framework powering up Venture API system.
+A Node.js event-driven microservice framework
  
 
 Installation
 ------------
 
 ```
- npm i @venture-api/plant
+ npm i yt-plant
 ```
 
 
@@ -18,7 +18,7 @@ Usage
 Create a plant:
  
  ```js
-const Plant = require('@venture-api/plant');
+const Plant = require('yt-plant');
 const pg = require('pg'); 
 const pack = require('./package.json');
 

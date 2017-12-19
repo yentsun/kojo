@@ -1,5 +1,5 @@
 {
-  "name": "@venture-api/plant",
+  "name": "yt-plant",
   "version": "3.0.3",
   "description": "A Node.js event-driven microservice framework",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/venture-api/plant.git"
+    "url": "git+https://github.com/yentsun/plant.git"
   },
   "keywords": [
     "event",
@@ -20,9 +20,9 @@
   ],
   "license": "UNLICENSED",
   "bugs": {
-    "url": "https://github.com/venture-api/plant/issues"
+    "url": "https://github.com/yentsun/plant/issues"
   },
-  "homepage": "https://github.com/venture-api/plant",
+  "homepage": "https://github.com/yentsun/plant",
   "dependencies": {
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
