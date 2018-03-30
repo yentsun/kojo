@@ -1,3 +1,8 @@
+[3.1.0]
+-------
+- [x] Drop `yt-config` dependency #2
+
+
 [3.0.4] - 201712-19
 -------------------
 - [x] Move package to yentsun/plant
