@@ -10,7 +10,7 @@ describe('plant', () => {
     const options = {
         subsDir: './test_plant/subscribers',
         modulesDir: './test_plant/modules',
-        configFile: './test_plant/config.ini'
+        nats: {host: 'natsHost'}
     };
     const nats = {connection: true};
     let plant;
