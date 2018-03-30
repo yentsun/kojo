@@ -5,7 +5,6 @@ const {promisify} = require('util');
 const merge = require('lodash/merge');
 const shortid = require('shortid');
 const forEach = require('lodash/forEach');
-const configLoader = require('yt-config');
 const Module = require('./lib/Module');
 const logger = require('./lib/logger');
 
@@ -19,8 +18,7 @@ module.exports = class extends EventEmitter {
         super();
         const defaults = {
             subsDir: 'subscribers',
-            modulesDir: 'modules',
-            configFile: 'config.ini'
+            modulesDir: 'modules'
         };
         const plant = this;
         plant.id = shortid.generate();
@@ -35,10 +33,6 @@ module.exports = class extends EventEmitter {
     async ready() {
 
         const plant = this;
-        process.stdout.write('  ☢ loading config...');
-        const config = await configLoader(plant.config.configFile);
-        plant.config = merge(plant.config, config);
-        console.log('done');
 
         process.stdout.write('  ☢ loading modules...');
         const modulesDir = path.join(process.cwd(), plant.config.modulesDir);
