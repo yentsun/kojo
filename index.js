@@ -3,10 +3,11 @@ const EventEmitter = require('events').EventEmitter;
 const fs = require('fs');
 const {promisify} = require('util');
 const merge = require('lodash/merge');
-const shortid = require('shortid');
+const trid = require('trid');
 const forEach = require('lodash/forEach');
 const Module = require('./lib/Module');
 const logger = require('./lib/logger');
+const pack = require('./package');
 
 
 const readDir = promisify(fs.readdir);
@@ -20,42 +21,55 @@ module.exports = class extends EventEmitter {
             subsDir: 'subscribers',
             modulesDir: 'modules'
         };
-        const plant = this;
-        plant.id = shortid.generate();
-        plant.name = name;
-        plant.config = options ? merge(defaults, options) : defaults;
-        plant._extras = {};
-        plant._modules = {};
-        plant._packageInfo = packageInfo;
-        plant._subscribers = [];
+        const kojo = this;
+        const id = new trid({prefix: name});
+        kojo.id = id.base();
+        kojo.name = name;
+        kojo.config = options ? merge(defaults, options) : defaults;
+        kojo._extras = {};
+        kojo._modules = {};
+        kojo._pack = packageInfo;
+        kojo._subscribers = [];
     }
 
     async ready() {
 
-        const plant = this;
+        const kojo = this;
 
-        process.stdout.write('  ☢ loading modules...');
-        const modulesDir = path.join(process.cwd(), plant.config.modulesDir);
+        console.log('*************************************************************');
+        console.log(`  ☢ ${kojo.id}  |  ${kojo._pack.name}@${kojo._pack.version}  |  ${pack.name}@${pack.version}`);
+        console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+        process.stdout.write('    ☢ loading modules...');
+        const modulesDir = path.join(process.cwd(), kojo.config.modulesDir);
         const moduleDirs = await readDir(modulesDir);
-        forEach(moduleDirs, (moduleDir) => {
-            const modulePath = path.join(modulesDir, moduleDir);
-            if (!fs.lstatSync(modulePath).isDirectory()) return;
-            const moduleName = path.basename(modulePath);
-            plant._modules[moduleName] = new Module(moduleName, modulePath, plant);
-        });
-        console.log('done');
+        try {
+            forEach(moduleDirs, (moduleDir) => {
+                const modulePath = path.join(modulesDir, moduleDir);
+                if (!fs.lstatSync(modulePath).isDirectory()) return;
+                const moduleName = path.basename(modulePath);
+                kojo._modules[moduleName] = new Module(moduleName, modulePath, kojo);
+            });
+            console.log('done');
+        } catch (error) {
+            console.log('error');
+            throw error;
+        }
 
-        process.stdout.write('  ☢ loading subscribers...');
-        const subsDir = path.join(process.cwd(), plant.config.subsDir);
+
+        process.stdout.write('    ☢ loading subscribers...');
+        const subsDir = path.join(process.cwd(), kojo.config.subsDir);
         const subscriberFiles = await readDir(subsDir);
         forEach(subscriberFiles, (subscriberFile) => {
             const subName = path.basename(subscriberFile, '.js');
             const requirePath = path.join(subsDir, subscriberFile);
-            plant._subscribers.push(subName);
+            kojo._subscribers.push(subName);
             let subsWrapper = require(requirePath);
-            subsWrapper(plant, logger(plant.name, 'sub', subName));
+            subsWrapper(kojo, logger(kojo.name, 'sub', subName));
         });
         console.log('done');
+        console.log('    ☢ kojo ready');
+
+        console.log('*************************************************************');
     }
 
     set(key, value) {
