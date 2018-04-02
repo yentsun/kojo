@@ -1,5 +1,5 @@
-[3.2.0]
--------
+[3.2.0] - 2018-04-02
+--------------------
 - [x] Add splash #3
 - [x] Replace `shortid` with `trid`
 - [x] Drop `moment` dependency
