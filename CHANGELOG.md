@@ -1,3 +1,15 @@
+[3.2.0] - 2018-04-02
+--------------------
+- [x] Add splash #3
+- [x] Replace `shortid` with `trid`
+- [x] Drop `moment` dependency
+- [x] Add travis and coveralls
+- [x] Drop `chai` dependency
+- [x] Improve code coverage
+- [x] Move tests into `test` directory
+- [x] Rename `plant` to `kojo` @ module context #4
+
+
 [3.1.0] - 2018-03-31
 --------------------
 - [x] Drop `yt-config` dependency #2

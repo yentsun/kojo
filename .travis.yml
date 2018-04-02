@@ -1,0 +1,9 @@
+dist: xenial
+language: node_js
+
+node_js:
+  - lts/*
+
+install: npm i
+
+script: nyc npm test && nyc report --reporter=text-lcov | coveralls
