@@ -1,7 +1,7 @@
 Kojo
 ====
 
-A Node.js event-driven microservice framework. Kōjō (工場) means 'plant' in 
+A Node.js event-driven microservice framework. Kōjō (工場) means 'factory' in
 Japanese.
  
 
@@ -16,25 +16,25 @@ Installation
 Usage
 -----
  
-Create a plant:
+Create a kojo:
  
  ```js
-const Plant = require('kojo');
+const Kojo = require('kojo');
 const pg = require('pg'); 
 const pack = require('./package.json');
 
 
 async function main() {
     
-    const plant = new Plant('plantName', options, pack);
-    await plant.ready();
+    const kojo = new Kojo('KojoOne', options, pack);
+    await kojo.ready();
     const pool = new pg.Pool({
         user: username,
         database: name,
         password,
         host
     });
-    plant.set('pg', pool);
+    kojo.set('pg', pool);
 }
 
 return main();
@@ -46,10 +46,10 @@ Create a module's method (`modules/<moduleName>/<methodName>.js`):
  ```js
 module.exports = async function (someData) {
     
-    const {plant, logger} = this;  // plant instance and the logger
+    const {kojo, logger} = this;  // kojo instance and the logger
     logger.debug('creating new record', someData);
-    const someModule = plant.module('someModule'); // load other module
-    const pool = plant.get('pg');  // get pg instance from plant
+    const someModule = kojo.module('someModule'); // load other module
+    const pool = kojo.get('pg');  // get pg instance from kojo
     const query = `INSERT INTO ... RETURNING *`;
     const result = await pool.query(query);
     const newRecord = result ? result.rows[0] : null;
@@ -64,19 +64,19 @@ module.exports = async function (someData) {
 Create a subscriber (`subscribers/someEntity.created.js`):
 
  ```js
-module.exports = (plant, logger) => {
+module.exports = (kojo, logger) => {
 
-    const someModule = plant.module('someModule');
-    const someOtherModule = plant.module('someOtherModule');
-    const nats = plant.get('nats');
+    const someModule = kojo.module('someModule');
+    const someOtherModule = kojo.module('someOtherModule');
+    const tasu = kojo.get('tasu');
 
     someModule.on('created', async (newRecord) => {
         const {id, ...} = newRecord;
-        const data = await nats.request('some.subject', {...});
+        const data = await tasu.request('some.subject', {...});
         const result = await someOtherModule.method(data);
         logger.debug('some log entry...');
         const updatedRecord = await someModule.update(id, result);
-        if (updatedRecord) nats.publish('record.created', updatedRecord);
+        if (updatedRecord) tasu.publish('record.created', updatedRecord);
     });
 }
 ```
