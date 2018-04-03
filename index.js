@@ -64,7 +64,7 @@ module.exports = class extends EventEmitter {
             const requirePath = path.join(subsDir, subscriberFile);
             kojo._subscribers.push(subName);
             let subsWrapper = require(requirePath);
-            subsWrapper(kojo, logger(kojo.name, 'sub', subName));
+            subsWrapper(kojo, logger(kojo, 'sub', subName));
         });
         console.log('done');
         console.log('    ☢ kojo ready');
