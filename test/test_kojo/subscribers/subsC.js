@@ -1,11 +1,13 @@
 const assert = require('assert');
+const sleep = require('util').promisify(setTimeout);
 
 
-module.exports = async (plant, logger) => {
+module.exports = async (kojo, logger) => {
 
-    const alpha = plant.module('alpha');
-    const bravo = plant.module('bravo');
+    const alpha = kojo.module('alpha');
+    const bravo = kojo.module('bravo');
     assert(alpha.methodA);
     assert(bravo.methodA);
+    await sleep(5);
     logger.debug('called');
 };

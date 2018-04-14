@@ -56,17 +56,18 @@ module.exports = class extends EventEmitter {
         }
 
 
-        process.stdout.write('    ☢ loading subscribers...');
+        console.log('    ☢ loading subscribers:');
         const subsDir = path.join(process.cwd(), kojo.config.subsDir);
         const subscriberFiles = await readDir(subsDir);
-        forEach(subscriberFiles, (subscriberFile) => {
+        const subsDone = [];
+        forEach(subscriberFiles, async (subscriberFile) => {
             const subName = path.basename(subscriberFile, '.js');
             const requirePath = path.join(subsDir, subscriberFile);
             kojo._subscribers.push(subName);
             let subsWrapper = require(requirePath);
-            subsWrapper(kojo, logger(kojo.name, 'sub', subName));
+            subsDone.push(subsWrapper(kojo, logger(kojo, 'sub', subName)));
         });
-        console.log('done');
+        await Promise.all(subsDone);
         console.log('    ☢ kojo ready');
 
         console.log('*************************************************************');
