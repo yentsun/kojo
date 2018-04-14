@@ -1,3 +1,9 @@
+[3.2.3] - 2018-04-14
+--------------------
+- [x] Improve subscribers loading
+- [x] Update trid version
+
+
 [3.2.2] - 2018-04-04
 --------------------
 - [x] subscriber logger fix
