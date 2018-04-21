@@ -1,3 +1,9 @@
+[3.3.0]
+--------------------
+- [x] Multiple extras unpacking #6
+- [x] Add kojo icon #5
+
+
 [3.2.3] - 2018-04-14
 --------------------
 - [x] Improve subscribers loading

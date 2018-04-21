@@ -80,7 +80,7 @@ module.exports = class extends EventEmitter {
     }
 
     get(key) {
-        return this._extras[key];
+        return key ? this._extras[key]: this._extras;
     }
 
     module(name) {
