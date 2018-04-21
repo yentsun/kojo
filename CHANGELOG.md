@@ -1,4 +1,4 @@
-[3.3.0]
+[3.3.0] - 2018-04-21
 --------------------
 - [x] Multiple extras unpacking #6
 - [x] Add kojo icon #5
@@ -7,7 +7,7 @@
 [3.2.3] - 2018-04-14
 --------------------
 - [x] Improve subscribers loading
-- [x] Update trid version
+- [x] Update `trid` version
 
 
 [3.2.2] - 2018-04-04
