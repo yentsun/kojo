@@ -10,7 +10,8 @@ describe('kojo', () => {
     const options = {
         subsDir: './test/test_kojo/subscribers',
         modulesDir: './test/test_kojo/modules',
-        nats: {host: 'natsHost'}
+        nats: {host: 'natsHost'},
+        icon: '🚩'
     };
     const nats = {connection: true};
     let kojo;
@@ -20,6 +21,7 @@ describe('kojo', () => {
         await kojo.ready();
         nats.config = kojo.config.nats;
         kojo.set('nats', nats);
+        kojo.set('rub', '튎嵸覆');
     });
 
     it('loads modules available to each other', async () => {
@@ -37,6 +39,13 @@ describe('kojo', () => {
         const nats = await kojo.module('alpha').methodB();
         assert(nats.connection);
         assert.equal(nats.config.host, 'natsHost');
+    });
+
+    it('allows multiple extras unpacking', async () => {
+        const {nats, rub} = await kojo.get();
+        assert(nats.connection);
+        assert.equal(nats.config.host, 'natsHost');
+        assert.equal(rub, '튎嵸覆');
     });
 
     it('checks whether kojo accessible inside methods (with 2 params)', async function () {

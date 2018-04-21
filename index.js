@@ -19,7 +19,8 @@ module.exports = class extends EventEmitter {
         super();
         const defaults = {
             subsDir: 'subscribers',
-            modulesDir: 'modules'
+            modulesDir: 'modules',
+            icon: '☢'
         };
         const kojo = this;
         const id = new trid({prefix: name});
@@ -35,11 +36,12 @@ module.exports = class extends EventEmitter {
     async ready() {
 
         const kojo = this;
+        const icon = kojo.config.icon;
 
         console.log('*************************************************************');
-        console.log(`  ☢ ${kojo.id}  |  ${kojo._pack.name}@${kojo._pack.version}  |  ${pack.name}@${pack.version}`);
+        console.log(`  ${icon} ${kojo.id}  |  ${kojo._pack.name}@${kojo._pack.version}  |  ${pack.name}@${pack.version}`);
         console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-        process.stdout.write('    ☢ loading modules...');
+        process.stdout.write(`    ${icon} loading modules...`);
         const modulesDir = path.join(process.cwd(), kojo.config.modulesDir);
         const moduleDirs = await readDir(modulesDir);
         try {
@@ -56,7 +58,7 @@ module.exports = class extends EventEmitter {
         }
 
 
-        console.log('    ☢ loading subscribers:');
+        console.log(`    ${icon} loading subscribers`);
         const subsDir = path.join(process.cwd(), kojo.config.subsDir);
         const subscriberFiles = await readDir(subsDir);
         const subsDone = [];
@@ -68,7 +70,7 @@ module.exports = class extends EventEmitter {
             subsDone.push(subsWrapper(kojo, logger(kojo, 'sub', subName)));
         });
         await Promise.all(subsDone);
-        console.log('    ☢ kojo ready');
+        console.log(`    ${icon} ${kojo.name} ready`);
 
         console.log('*************************************************************');
     }
@@ -78,7 +80,7 @@ module.exports = class extends EventEmitter {
     }
 
     get(key) {
-        return this._extras[key];
+        return key ? this._extras[key]: this._extras;
     }
 
     module(name) {
