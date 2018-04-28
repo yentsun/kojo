@@ -22,8 +22,8 @@ describe('kojo', () => {
     });
 
     it('loads modules available to each other', async () => {
-        kojo.module('alpha').on('aCalled', methodAcalledSpy);
-        const result = await kojo.module('alpha').methodA([]);
+        kojo.modules.alpha.on('aCalled', methodAcalledSpy);
+        const result = await kojo.modules.alpha.methodA([]);
         assert.equal(result, 'bravo');
     });
 
@@ -47,7 +47,7 @@ describe('kojo', () => {
 
     it('checks whether kojo accessible inside methods (with 2 params)', async function () {
         kojo.set('variable', 12);
-        const result = await kojo.module('charlie').methodA(3);
+        const result = await kojo.modules.charlie.methodA(3);
         assert.equal(result, 36);
     });
 

@@ -4,8 +4,7 @@ const sleep = require('util').promisify(setTimeout);
 
 module.exports = async (kojo, logger) => {
 
-    const alpha = kojo.module('alpha');
-    const bravo = kojo.module('bravo');
+    const {alpha, bravo} = kojo.modules;
     assert(alpha.methodA);
     assert(bravo.methodA);
     await sleep(5);
