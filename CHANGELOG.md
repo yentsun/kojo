@@ -1,3 +1,9 @@
+[4.0.0]
+-------
+- [x] Single options object with default values
+- [ ] Added more docs
+
+
 [3.3.0] - 2018-04-21
 --------------------
 - [x] Multiple extras unpacking #6

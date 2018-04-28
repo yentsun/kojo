@@ -1,7 +1,6 @@
 const assert = require('assert');
 const sinon = require('sinon');
 const Kojo = require('../index');
-const pack = require('../package.json');
 
 
 describe('kojo', () => {
@@ -11,13 +10,14 @@ describe('kojo', () => {
         subsDir: './test/test_kojo/subscribers',
         modulesDir: './test/test_kojo/modules',
         nats: {host: 'natsHost'}, // TODO move to global config
+        name: 'test-kojo',
         icon: '🚩'
     };
     const nats = {connection: true};
     let kojo;
 
     before(async function() {
-        kojo = new Kojo('test-kojo', options, pack);
+        kojo = new Kojo(options);
         await kojo.ready();
         nats.config = kojo.config.nats;
         kojo.set('nats', nats);
@@ -67,17 +67,33 @@ describe('kojo', () => {
 describe('broken kojo', () => {
 
     const options = {
+        name: 'broken-kojo',
         subsDir: './test/broken_kojo/subscribers',
         modulesDir: './test/broken_kojo/modules'
     };
 
     it('throws on broken module', async () => {
-        const kojo = new Kojo('broken-kojo', options, pack);
+        const kojo = new Kojo(options);
         try {
             await kojo.ready();
         } catch (error) {
             assert(error.message === 'Method zulu.methodA is not an async function');
         }
+    })
+
+});
+
+describe('nameless kojo', () => {
+
+    const options = {
+        subsDir: './test/test_kojo/subscribers',
+        modulesDir: './test/test_kojo/modules'
+    };
+
+    it('throws on broken module', async () => {
+        const kojo = new Kojo(options);
+        await kojo.ready();
+        assert(kojo.name === '工場');
     })
 
 });

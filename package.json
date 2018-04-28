@@ -1,7 +1,7 @@
 {
   "name": "kojo",
   "version": "3.3.0",
-  "description": "A Node.js event-driven microservice framework",
+  "description": "An event-driven microservice framework. Kōjō (工場) means 'plant' in Japanese.",
   "main": "index.js",
   "scripts": {
     "test": "mocha"

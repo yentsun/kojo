@@ -7,39 +7,41 @@ const trid = require('trid');
 const forEach = require('lodash/forEach');
 const Module = require('./lib/Module');
 const logger = require('./lib/logger');
-const pack = require('./package');
+const {getParentPackageInfo} = require('./lib/util');
+const kojoPackage = require('./package');
 
 
 const readDir = promisify(fs.readdir);
 
-
 module.exports = class extends EventEmitter {
 
-    constructor (name, options, packageInfo={}) {
+    constructor(options) {
+
         super();
         const defaults = {
             subsDir: 'subscribers',
             modulesDir: 'modules',
+            parentPackage: getParentPackageInfo(),
+            name: '工場',
             icon: '☢'
         };
-        const kojo = this;
+        this.config = options ? merge(defaults, options) : defaults;
+        const {name} = this.config;
         const id = new trid({prefix: name});
-        kojo.id = id.base();
-        kojo.name = name;
-        kojo.config = options ? merge(defaults, options) : defaults;
-        kojo._extras = {};
-        kojo._modules = {};
-        kojo._pack = packageInfo;
-        kojo._subscribers = [];
+        this.id = id.base();
+        this.name = name;
+        this._extras = {};
+        this._modules = {};
+        this._subscribers = [];
     }
 
     async ready() {
 
         const kojo = this;
-        const icon = kojo.config.icon;
+        const {icon, parentPackage} = kojo.config;
 
         console.log('*************************************************************');
-        console.log(`  ${icon} ${kojo.id}  |  ${kojo._pack.name}@${kojo._pack.version}  |  ${pack.name}@${pack.version}`);
+        console.log(`  ${icon} ${kojo.id}  |  ${parentPackage.name}@${parentPackage.version}  |  ${kojoPackage.name}@${kojoPackage.version}`);
         console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
         process.stdout.write(`    ${icon} loading modules...`);
         const modulesDir = path.join(process.cwd(), kojo.config.modulesDir);

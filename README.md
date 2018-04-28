@@ -1,7 +1,7 @@
-Kojo
-====
+🏭 Kojo
+=======
 
-A Node.js event-driven microservice framework. Kōjō (工場) means 'factory' in
+An event-driven microservice framework. Kōjō (工場) means 'factory' in
 Japanese.
 
 [![Build Status](https://travis-ci.org/yentsun/kojo.svg?branch=master)](https://travis-ci.org/yentsun/kojo)
@@ -29,7 +29,7 @@ const pack = require('./package.json');
 
 async function main() {
     
-    const kojo = new Kojo('KojoOne', options, pack);
+    const kojo = new Kojo('cars', options, pack);
     await kojo.ready();
     const pool = new pg.Pool({
         user: username,
