@@ -10,7 +10,7 @@ describe('kojo', () => {
     const options = {
         subsDir: './test/test_kojo/subscribers',
         modulesDir: './test/test_kojo/modules',
-        nats: {host: 'natsHost'},
+        nats: {host: 'natsHost'}, // TODO move to global config
         icon: '🚩'
     };
     const nats = {connection: true};
