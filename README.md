@@ -15,6 +15,7 @@ common tasks with methods.
 
 [![Build Status](https://travis-ci.org/yentsun/kojo.svg?branch=master)](https://travis-ci.org/yentsun/kojo)
 [![Coverage Status](https://coveralls.io/repos/github/yentsun/kojo/badge.svg?branch=master)](https://coveralls.io/github/yentsun/kojo?branch=master)
+![Dependencies](https://david-dm.org/yentsun/kojo.svg)
 
 
 Installation
