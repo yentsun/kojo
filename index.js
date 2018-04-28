@@ -55,8 +55,7 @@ module.exports = class {
             });
             console.log('done');
         } catch (error) {
-            const {code, path: failedPath} = error;
-            if (code === 'ENOENT' && failedPath === modulesDir && !kojo._options.modulesDir)
+            if (error.code === 'ENOENT' && error.path === modulesDir && !kojo._options.modulesDir)
                 console.log(`    ${icon} skipping modules`);
             else {
                 console.log('error');
@@ -66,20 +65,27 @@ module.exports = class {
 
         // SUBSCRIBERS
 
-        console.log(`    ${icon} loading subscribers`);
         const subsDir = path.join(process.cwd(), kojo.config.subsDir);
-        const subscriberFiles = await readDir(subsDir);
-        const subsDone = [];
-        subscriberFiles.forEach(async (subscriberFile) => {
-            const subName = path.basename(subscriberFile, '.js');
-            const requirePath = path.join(subsDir, subscriberFile);
-            kojo._subscribers.push(subName);
-            let subsWrapper = require(requirePath);
-            subsDone.push(subsWrapper(kojo, logger(kojo, 'sub', subName)));
-        });
-        await Promise.all(subsDone);
+        try {
+            const subsDone = [];
+            const subscriberFiles = await readDir(subsDir);
+            console.log(`    ${icon} loading subscribers`);
+            subscriberFiles.forEach(async (subscriberFile) => {
+                const subName = path.basename(subscriberFile, '.js');
+                const requirePath = path.join(subsDir, subscriberFile);
+                kojo._subscribers.push(subName);
+                let subsWrapper = require(requirePath);
+                subsDone.push(subsWrapper(kojo, logger(kojo, 'sub', subName)));
+            });
+            await Promise.all(subsDone);
+        } catch (error) {
+            if (error.code === 'ENOENT' && error.path === subsDir) {
+                console.log(`    ${icon} skipping subscribers`);
+            } else
+                throw error;
+        }
 
-        console.log(`    ${icon} ${kojo.name} ready`);
+        console.log(`    ${icon} kojo "${kojo.name}" ready`);
         console.log('*************************************************************');
     }
 

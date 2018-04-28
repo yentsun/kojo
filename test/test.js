@@ -9,18 +9,15 @@ describe('kojo', () => {
     const options = {
         subsDir: './test/test_kojo/subscribers',
         modulesDir: './test/test_kojo/modules',
-        nats: {host: 'natsHost'}, // TODO move to global config
-        name: 'test-kojo',
+        name: 'test',
         icon: '🚩'
     };
-    const nats = {connection: true};
     let kojo;
 
     before(async function() {
         kojo = new Kojo(options);
         await kojo.ready();
-        nats.config = kojo.config.nats;
-        kojo.set('nats', nats);
+        kojo.set('nats', {host: 'natsHost', connection: true});
         kojo.set('rub', '튎嵸覆');
     });
 
@@ -36,15 +33,15 @@ describe('kojo', () => {
     });
 
     it('loads config and extras', async () => {
-        const nats = await kojo.module('alpha').methodB();
+        const nats = await kojo.modules.alpha.methodB();
         assert(nats.connection);
-        assert.equal(nats.config.host, 'natsHost');
+        assert.equal(nats.host, 'natsHost');
     });
 
     it('allows multiple extras unpacking', async () => {
         const {nats, rub} = await kojo.get();
         assert(nats.connection);
-        assert.equal(nats.config.host, 'natsHost');
+        assert.equal(nats.host, 'natsHost');
         assert.equal(rub, '튎嵸覆');
     });
 
@@ -67,7 +64,7 @@ describe('kojo', () => {
 describe('broken kojo', () => {
 
     const options = {
-        name: 'broken-kojo',
+        name: 'broken',
         subsDir: './test/broken_kojo/subscribers',
         modulesDir: './test/broken_kojo/modules'
     };
@@ -107,6 +104,15 @@ describe('module-less kojo', () => {
 
     it('initializes normally', async () => {
         const kojo = new Kojo(options);
+        await kojo.ready();
+    })
+
+});
+
+describe('empty kojo', () => {
+
+    it('initializes normally', async () => {
+        const kojo = new Kojo({name: 'empty'});
         await kojo.ready();
     })
 

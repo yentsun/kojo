@@ -23,21 +23,12 @@ Create a kojo:
  
  ```js
 const Kojo = require('kojo');
-const pg = require('pg'); 
-const pack = require('./package.json');
 
 
 async function main() {
     
-    const kojo = new Kojo('cars', options, pack);
+    const kojo = new Kojo({name: 'Cars'});
     await kojo.ready();
-    const pool = new pg.Pool({
-        user: username,
-        database: name,
-        password,
-        host
-    });
-    kojo.set('pg', pool);
 }
 
 return main();

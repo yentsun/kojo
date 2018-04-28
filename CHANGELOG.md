@@ -1,7 +1,7 @@
 [4.0.0]
 -------
 - [x] Single options object with default values
-- [x] Allow module-less config
+- [x] Allow module-less / subscriber-less config
 - [x] Modules are accessible via `kojo.modules.moduleName`
 - [ ] Add more docs
 
