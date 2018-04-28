@@ -90,10 +90,24 @@ describe('nameless kojo', () => {
         modulesDir: './test/test_kojo/modules'
     };
 
-    it('throws on broken module', async () => {
+    it('is assigned a default name', async () => {
         const kojo = new Kojo(options);
         await kojo.ready();
         assert(kojo.name === '工場');
+    })
+
+});
+
+describe('module-less kojo', () => {
+
+    const options = {
+        name: 'no-mod',
+        subsDir: './test/module-less/subs'
+    };
+
+    it('initializes normally', async () => {
+        const kojo = new Kojo(options);
+        await kojo.ready();
     })
 
 });

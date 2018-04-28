@@ -25,7 +25,8 @@ module.exports = class extends EventEmitter {
             name: '工場',
             icon: '☢'
         };
-        this.config = options ? merge(defaults, options) : defaults;
+        this._options = options;
+        this.config = this._options ? merge(defaults, this._options) : defaults;
         const {name} = this.config;
         const id = new trid({prefix: name});
         this.id = id.base();
@@ -43,10 +44,11 @@ module.exports = class extends EventEmitter {
         console.log('*************************************************************');
         console.log(`  ${icon} ${kojo.id}  |  ${parentPackage.name}@${parentPackage.version}  |  ${kojoPackage.name}@${kojoPackage.version}`);
         console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-        process.stdout.write(`    ${icon} loading modules...`);
         const modulesDir = path.join(process.cwd(), kojo.config.modulesDir);
-        const moduleDirs = await readDir(modulesDir);
+
         try {
+            const moduleDirs = await readDir(modulesDir);
+            process.stdout.write(`    ${icon} loading modules...`);
             forEach(moduleDirs, (moduleDir) => {
                 const modulePath = path.join(modulesDir, moduleDir);
                 if (!fs.lstatSync(modulePath).isDirectory()) return;
@@ -55,8 +57,14 @@ module.exports = class extends EventEmitter {
             });
             console.log('done');
         } catch (error) {
-            console.log('error');
-            throw error;
+            const {code, path: failedPath} = error;
+            if (code === 'ENOENT' && failedPath === modulesDir && !kojo._options.modulesDir)
+                console.log(`    ${icon} skipping modules`);
+            else {
+                console.log('error');
+                throw error;
+            }
+
         }
 
 
