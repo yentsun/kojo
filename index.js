@@ -97,9 +97,4 @@ module.exports = class {
         return key ? this._extras[key]: this._extras;
     }
 
-    module(name) {
-        if (!this.modules[name]) throw new Error(`module '${name}' is either not loaded yet or unknown`);
-        return this.modules[name];
-    }
-
 };

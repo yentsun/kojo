@@ -3,6 +3,7 @@
 - [x] Single options object with default values
 - [x] Allow module-less / subscriber-less config
 - [x] Modules are accessible via `kojo.modules.moduleName`
+- [x] Drop `kojo.module()` method
 - [ ] Add more docs
 
 
