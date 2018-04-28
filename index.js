@@ -1,5 +1,4 @@
 const path = require('path');
-const EventEmitter = require('events').EventEmitter;
 const fs = require('fs');
 const {promisify} = require('util');
 const merge = require('lodash/merge');
@@ -13,11 +12,10 @@ const kojoPackage = require('./package');
 
 const readDir = promisify(fs.readdir);
 
-module.exports = class extends EventEmitter {
+module.exports = class {
 
     constructor(options) {
 
-        super();
         const defaults = {
             subsDir: 'subscribers',
             modulesDir: 'modules',
@@ -44,8 +42,11 @@ module.exports = class extends EventEmitter {
         console.log('*************************************************************');
         console.log(`  ${icon} ${kojo.id}  |  ${parentPackage.name}@${parentPackage.version}  |  ${kojoPackage.name}@${kojoPackage.version}`);
         console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-        const modulesDir = path.join(process.cwd(), kojo.config.modulesDir);
 
+
+        // MODULES
+
+        const modulesDir = path.join(process.cwd(), kojo.config.modulesDir);
         try {
             const moduleDirs = await readDir(modulesDir);
             process.stdout.write(`    ${icon} loading modules...`);
@@ -64,9 +65,10 @@ module.exports = class extends EventEmitter {
                 console.log('error');
                 throw error;
             }
-
         }
 
+
+        // SUBSCRIBERS
 
         console.log(`    ${icon} loading subscribers`);
         const subsDir = path.join(process.cwd(), kojo.config.subsDir);
@@ -80,8 +82,9 @@ module.exports = class extends EventEmitter {
             subsDone.push(subsWrapper(kojo, logger(kojo, 'sub', subName)));
         });
         await Promise.all(subsDone);
-        console.log(`    ${icon} ${kojo.name} ready`);
 
+
+        console.log(`    ${icon} ${kojo.name} ready`);
         console.log('*************************************************************');
     }
 
