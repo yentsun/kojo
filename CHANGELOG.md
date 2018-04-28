@@ -2,6 +2,7 @@
 -------
 - [x] Single options object with default values
 - [x] Allow module-less config
+- [x] Modules are accessible via `kojo.modules.moduleName`
 - [ ] Add more docs
 
 

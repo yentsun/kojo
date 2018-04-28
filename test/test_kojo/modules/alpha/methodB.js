@@ -1,8 +1,8 @@
 module.exports = async function () {
 
-    const {plant, logger} = this;
+    const {kojo, logger} = this;
 
-    const nats = plant.get('nats');
+    const nats = kojo.get('nats');
     logger.debug(`called`);
     return nats;
 };

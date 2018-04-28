@@ -1,16 +1,14 @@
 const path = require('path');
 const fs = require('fs');
 const {promisify} = require('util');
-const merge = require('lodash/merge');
+const readDir = promisify(fs.readdir);
+const merge = require('lodash.merge');
 const trid = require('trid');
-const forEach = require('lodash/forEach');
 const Module = require('./lib/Module');
 const logger = require('./lib/logger');
 const {getParentPackageInfo} = require('./lib/util');
 const kojoPackage = require('./package');
 
-
-const readDir = promisify(fs.readdir);
 
 module.exports = class {
 
@@ -30,7 +28,7 @@ module.exports = class {
         this.id = id.base();
         this.name = name;
         this._extras = {};
-        this._modules = {};
+        this.modules = {};
         this._subscribers = [];
     }
 
@@ -43,18 +41,17 @@ module.exports = class {
         console.log(`  ${icon} ${kojo.id}  |  ${parentPackage.name}@${parentPackage.version}  |  ${kojoPackage.name}@${kojoPackage.version}`);
         console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 
-
         // MODULES
 
         const modulesDir = path.join(process.cwd(), kojo.config.modulesDir);
         try {
             const moduleDirs = await readDir(modulesDir);
             process.stdout.write(`    ${icon} loading modules...`);
-            forEach(moduleDirs, (moduleDir) => {
+            moduleDirs.forEach((moduleDir) => {
                 const modulePath = path.join(modulesDir, moduleDir);
                 if (!fs.lstatSync(modulePath).isDirectory()) return;
                 const moduleName = path.basename(modulePath);
-                kojo._modules[moduleName] = new Module(moduleName, modulePath, kojo);
+                kojo.modules[moduleName] = new Module(moduleName, modulePath, kojo);
             });
             console.log('done');
         } catch (error) {
@@ -67,14 +64,13 @@ module.exports = class {
             }
         }
 
-
         // SUBSCRIBERS
 
         console.log(`    ${icon} loading subscribers`);
         const subsDir = path.join(process.cwd(), kojo.config.subsDir);
         const subscriberFiles = await readDir(subsDir);
         const subsDone = [];
-        forEach(subscriberFiles, async (subscriberFile) => {
+        subscriberFiles.forEach(async (subscriberFile) => {
             const subName = path.basename(subscriberFile, '.js');
             const requirePath = path.join(subsDir, subscriberFile);
             kojo._subscribers.push(subName);
@@ -82,7 +78,6 @@ module.exports = class {
             subsDone.push(subsWrapper(kojo, logger(kojo, 'sub', subName)));
         });
         await Promise.all(subsDone);
-
 
         console.log(`    ${icon} ${kojo.name} ready`);
         console.log('*************************************************************');
@@ -97,8 +92,8 @@ module.exports = class {
     }
 
     module(name) {
-        if (!this._modules[name]) throw new Error(`module '${name}' is either not loaded yet or unknown`);
-        return this._modules[name];
+        if (!this.modules[name]) throw new Error(`module '${name}' is either not loaded yet or unknown`);
+        return this.modules[name];
     }
 
 };
