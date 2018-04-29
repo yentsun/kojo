@@ -9,9 +9,9 @@ The idea of this framework emerged after couple of years of using
 too abstract and complex.
 
 Kojo, on the other hand, is very simple: it has subscribers, modules and
-methods which are just plain functions. Subscribers susbscribe to a
-pub/sub (or request/response) transport of your choice, modules perform
-common tasks with methods.
+methods which are just plain functions. *Subscribers* susbscribe to a
+pub/sub (or request/response) transport of your choice, *modules* perform
+various tasks via *methods*.
 
 [![Build Status](https://travis-ci.org/yentsun/kojo.svg?branch=master)](https://travis-ci.org/yentsun/kojo)
 [![Coverage Status](https://coveralls.io/repos/github/yentsun/kojo/badge.svg?branch=master)](https://coveralls.io/github/yentsun/kojo?branch=master)
@@ -37,7 +37,7 @@ module.exports = async function (userData) {
     const {kojo, logger} = this;  // kojo instance and the logger
 
     logger.debug('creating', userData);  // logger will automatically add module and method name
-    const pool = kojo.get('pg');  // get pg previously set pg connection
+    const pool = kojo.get('pg');  // get previously set pg connection
     const query = `INSERT INTO ... RETURNING *`;
     const result = await pool.query(query);
     const newRecord = result ? result.rows[0] : null;
@@ -86,7 +86,7 @@ async function main() {
     const nats = new NATS({...});
     kojo.set('nats', nats);
 
-    await kojo.ready();
+    await kojo.ready();  // await for modules and subscribers to initialize
 }
 
 return main();
@@ -104,7 +104,7 @@ The following options are available while creating a new Kojo instance:
 - **icon** - another means if distinguishing your microservices
   (default `☢`)
 - **subsDir** - subscribers directory (default `subscribers`)
-- **modules** - modules directory (default `modules`)
+- **modulesDir** - modules directory (default `modules`)
 - **parentPackage** - package.json of the parent package (default is the
   one in `process.cwd()` directory)
 
@@ -138,7 +138,7 @@ Modules and methods
 example:
 
 ```
-🗀 service/
+🗀 kojo/
 ├── 🗀 modules/
 │   ├── 🗀 user/
 │   │   ├── 🖹 register.js
@@ -156,29 +156,51 @@ These methods are available from anywhere via kojo instance:
 - `kojo.modules.profile.update()`
 - etc
 
-A method must export an `async` function that (usually) returns a value.
-It has kojo instance and [logger] in its context:
+A method file must export an `async` function that (usually) returns a value.
+It will have kojo instance and [logger](#logger) in its context:
 ```js
 module.exports = async function () {
 
     const {kojo, logger} = this;  // instance and logger in context
     ...
     const {profile} = kojo.modules;
-    logger.debug('calling profile.create');
+    logger.debug('creating profile', userData);
     return await profile.create(userData);
 };
 ```
 **Important: for method's context to be available, the method must be
-defined via `function() {}`, not arrow ()==>{}**
+defined via `function() {}`, not arrow `()==>{}`**
 
-Modules are also `EventEmitter`s and can publish internal events. Thus
+Modules are also `EventEmitter`s and can publish internal events:
+```js
+...
+const {profile} = kojo.modules;
+...
+profile.emit('created', newProfile);
+...
+profile.on('created', (newProfile) => {
+...
+});
+
+```
+
+ Thus
 you can create 'internal' subscribers that listen to module's events.
 
 
 Subscribers
 -----------
 
-*Subscriber* export an async function that is **called** during kojo
+```
+🗀 kojo/
+├── 🗀 subscribers/
+│   ├── 🖹 user.register.js
+│   ├── 🖹 user.update.js
+│   ├── 🖹 profile.created.js
+│   └── ...
+```
+
+*Subscriber* exports an async function that is **called once** during kojo
 initialization and is not avalable otherwise. It is supposed to have a
 single subscription to a pub/sub transport subject or module's event
 and is recommended to be named after this subject / event name. For
@@ -195,14 +217,14 @@ module.exports = async (kojo, logger) => {
 };
 
 ```
-Unlike module method, subscriber function can be defined via arrow and
+Unlike *module method*, subscriber function can be defined via arrow and
 has kojo instance and logger as arguments, not context.
 
 
 Logger
 ------
 
-Kojo uses [winstnon] logger for 'smart' logging form subscribers and modules.
+Kojo uses [winston] logger for 'smart' logging from subscribers and modules.
 'Smart' means that if you log from method `user.register`, log entries
 will include "user.register":
 ```js
@@ -215,6 +237,22 @@ logger.debug('registering', userData);
 
 You can always use your own logger, provided you register it as an extra,
 but this logger will, of course, not have this 'smart' feature.
+
+
+Logic placement strategy
+------------------------
+
+It is sometimes difficult to decide on where business logic should
+reside: subscribers or modules. A rule of a thumb could be the
+following - **place logic inside subscribers when in doubt**. When code
+starts repeating or getting complicated - its time for
+introducing some modules to keep it DRY and maintainable.
+
+Subscriber should be the single point of entry for an event bound to your
+microservice, external or internal. You should be able to easily tell
+what exactly a microservice is responsible for by just looking at its
+subscribers directory. You can then track the rest of the logic by
+inspecting a subscriber and following the modules it uses.
 
 
 Test
