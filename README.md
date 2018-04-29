@@ -162,9 +162,10 @@ It has kojo instance and [logger] in its context:
 module.exports = async function () {
 
     const {kojo, logger} = this;  // instance and logger in context
-    const {alpha, bravo} = kojo.modules;
-    logger.debug(`called`);
-    return await bravo.methodA();
+    ...
+    const {profile} = kojo.modules;
+    logger.debug('calling profile.create');
+    return await profile.create(userData);
 };
 ```
 **Important: for method's context to be available, the method must be
@@ -174,8 +175,47 @@ Modules are also `EventEmitter`s and can publish internal events. Thus
 you can create 'internal' subscribers that listen to module's events.
 
 
+Subscribers
+-----------
+
+*Subscriber* export an async function that is **called** during kojo
+initialization and is not avalable otherwise. It is supposed to have a
+single subscription to a pub/sub transport subject or module's event
+and is recommended to be named after this subject / event name. For
+example, `subscribers/user.registered.js`:
+```js
+module.exports = async (kojo, logger) => {
+
+    const {user} = kojo.modules;
+    const nats = kojo.get('nats');
+    user.on('registered', (newUser) => {
+        logger.debug('publishing notification');
+        nats.publish('notification', newUser);
+    });
+};
+
+```
+Unlike module method, subscriber function can be defined via arrow and
+has kojo instance and logger as arguments, not context.
+
+
 Logger
 ------
+
+Kojo uses [winstnon] logger for 'smart' logging form subscribers and modules.
+'Smart' means that if you log from method `user.register`, log entries
+will include "user.register":
+```js
+logger.debug('registering', userData);
+```
+
+```
+2018-04-29T09:51:49.674Z test.QOmup DEBUG [user.register] registering {...}
+```
+
+You can always use your own logger, provided you register it as an extra,
+but this logger will, of course, not have this 'smart' feature.
+
 
 Test
 ----
@@ -184,4 +224,6 @@ Test
 npm test
 ```
 
+
 [Seneca]: http://senecajs.org/
+[winston]: https://www.npmjs.com/package/winston
