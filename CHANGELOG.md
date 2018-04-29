@@ -1,3 +1,12 @@
+[4.0.0] - 2018-04-29
+--------------------
+- [x] Single options object with default values
+- [x] Allow module-less / subscriber-less config
+- [x] Modules are accessible via `kojo.modules.moduleName`
+- [x] Drop `kojo.module()` method
+- [x] Add more docs
+
+
 [3.3.0] - 2018-04-21
 --------------------
 - [x] Multiple extras unpacking #6

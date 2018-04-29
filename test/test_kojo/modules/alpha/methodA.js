@@ -3,10 +3,9 @@ const assert = require('assert');
 
 module.exports = async function () {
 
-    const {plant, logger} = this;
+    const {kojo, logger} = this;
+    const {alpha, bravo} = kojo.modules;
 
-    const alpha = plant.module('alpha');
-    const bravo = plant.module('bravo');
     logger.debug(`called`);
     assert(typeof alpha.methodB === 'function');
     alpha.emit('aCalled');
