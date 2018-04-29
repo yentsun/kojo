@@ -4,7 +4,7 @@
 - [x] Allow module-less / subscriber-less config
 - [x] Modules are accessible via `kojo.modules.moduleName`
 - [x] Drop `kojo.module()` method
-- [ ] Add more docs
+- [x] Add more docs
 
 
 [3.3.0] - 2018-04-21
