@@ -1,3 +1,8 @@
+[4.0.1] - 2018-05-02
+--------------------
+- [x] Increase code coverage #8
+
+
 [4.0.0] - 2018-04-29
 --------------------
 - [x] Single options object with default values
