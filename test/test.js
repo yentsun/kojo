@@ -51,6 +51,14 @@ describe('kojo', () => {
         assert.equal(result, 36);
     });
 
+    it('has promise rejected if module throws', async function () {
+        try {
+            await kojo.modules.alpha.methodZ();
+        } catch (error) {
+            assert.equal(error.message, 'Synthetic method error');
+        }
+    });
+
     it('checks exception logging (with 2 params)', async function () {
         try {
             await kojo.module('charlie').methodA();
@@ -74,7 +82,7 @@ describe('broken kojo', () => {
         try {
             await kojo.ready();
         } catch (error) {
-            assert(error.message === 'Method zulu.methodA is not an async function');
+            assert.equal(error.message, 'Method zulu.methodA is not an async function');
         }
     })
 
