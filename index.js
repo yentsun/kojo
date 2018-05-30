@@ -53,7 +53,7 @@ module.exports = class {
                 const moduleName = path.basename(modulePath);
                 kojo.modules[moduleName] = new Module(moduleName, modulePath, kojo);
             });
-            console.log('done');
+            console.log(` done (${Object.keys(kojo.modules).length})`);
         } catch (error) {
             if (error.code === 'ENOENT' && error.path === modulesDir && !kojo._options.modulesDir)
                 console.log(`    ${icon} skipping modules`);
@@ -69,7 +69,8 @@ module.exports = class {
         try {
             const subsDone = [];
             const subscriberFiles = await readDir(subsDir);
-            console.log(`    ${icon} loading subscribers`);
+            const subsAlias = path.basename(kojo.config.subsDir);
+            process.stdout.write(`    ${icon} loading ${subsAlias}...`);
             subscriberFiles.forEach(async (subscriberFile) => {
                 const subName = path.basename(subscriberFile, '.js');
                 const requirePath = path.join(subsDir, subscriberFile);
@@ -78,6 +79,7 @@ module.exports = class {
                 subsDone.push(subsWrapper(kojo, logger(kojo, 'sub', subName)));
             });
             await Promise.all(subsDone);
+            console.log(` done (${Object.keys(kojo._subscribers).length})`);
         } catch (error) {
             if (error.code === 'ENOENT' && error.path === subsDir) {
                 console.log(`    ${icon} skipping subscribers`);
