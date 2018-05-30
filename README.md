@@ -17,6 +17,8 @@ various tasks via *methods*.
 [![Coverage Status](https://coveralls.io/repos/github/yentsun/kojo/badge.svg?branch=master)](https://coveralls.io/github/yentsun/kojo?branch=master)
 [![Dependencies](https://david-dm.org/yentsun/kojo.svg)](https://david-dm.org/yentsun/kojo)
 [![devDependencies Status](https://david-dm.org/yentsun/kojo/dev-status.svg)](https://david-dm.org/yentsun/kojo?type=dev)
+[![Known Vulnerabilities](https://snyk.io/test/github/yentsun/kojo/badge.svg?targetFile=package.json)](https://snyk.io/test/github/yentsun/kojo?targetFile=package.json)
+
 
 Installation
 ------------
