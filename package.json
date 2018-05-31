@@ -1,10 +1,11 @@
 {
   "name": "kojo",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "description": "An event-driven microservice framework. Kōjō (工場) means 'plant' in Japanese.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "docs": "./node_modules/.bin/jsdoc2md --template ./docs_template.hbs ./index.js > docs.md"
   },
   "repository": {
     "type": "git",
@@ -34,8 +35,9 @@
   },
   "devDependencies": {
     "coveralls": "^3.0.0",
+    "jsdoc-to-markdown": "^4.0.1",
     "mocha": "^5.1.1",
-    "nyc": "^11.7.1",
-    "sinon": "^4.5.0"
+    "nyc": "^11.8.0",
+    "sinon": "^5.0.3"
   }
 }

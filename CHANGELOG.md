@@ -1,3 +1,10 @@
+[4.1.0] - 2018-05-31
+--------------------
+- [x] Add JSDoc
+- [x] Add modules/subscribers count at splash screen
+- [x] Add subscribers alias (based on directory name)
+
+
 [4.0.1] - 2018-05-02
 --------------------
 - [x] Increase code coverage #8

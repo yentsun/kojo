@@ -17,6 +17,8 @@ various tasks via *methods*.
 [![Coverage Status](https://coveralls.io/repos/github/yentsun/kojo/badge.svg?branch=master)](https://coveralls.io/github/yentsun/kojo?branch=master)
 [![Dependencies](https://david-dm.org/yentsun/kojo.svg)](https://david-dm.org/yentsun/kojo)
 [![devDependencies Status](https://david-dm.org/yentsun/kojo/dev-status.svg)](https://david-dm.org/yentsun/kojo?type=dev)
+[![Known Vulnerabilities](https://snyk.io/test/github/yentsun/kojo/badge.svg?targetFile=package.json)](https://snyk.io/test/github/yentsun/kojo?targetFile=package.json)
+
 
 Installation
 ------------
@@ -107,28 +109,6 @@ The following options are available while creating a new Kojo instance:
 - **modulesDir** - modules directory (default `modules`)
 - **parentPackage** - package.json of the parent package (default is the
   one in `process.cwd()` directory)
-
-
-Instance API
-------------
-
-A Kojo instance has the following attributes:
-
-- **name** - instance name, taken from configuration
-- **id** - unique id if the instance, prefixed with `name` (example:
-  `user.Ksk7p`)
-- **config** - configuration object, default options merged with custom
-  ones (see [Configuration](#configuration))
-- **modules** - object, containg modules found in the modules directory;
-  if a module has methods, they will be available through dot notation.
-  Examples: `kojo.modules.user.create()`, `kojo.modules.profile.update()`
-- **ready()** - returns a Promise which resolves after every module and
-  subscriber has been loaded. Always `await` for it before using the
-  instance.
-- **set(key)** - sen an *extra* for the instance. It could be a DB
-  or transport connection, configuration object, a constant, literally
-  anything
-- **get(key)** - get and *extra* previously set with `set()` method
 
 
 Modules and methods
@@ -239,6 +219,12 @@ You can always use your own logger, provided you register it as an extra,
 but this logger will, of course, not have this 'smart' feature.
 
 
+Instance API
+------------
+
+Read the [docs].
+
+
 Logic placement strategy
 ------------------------
 
@@ -265,3 +251,4 @@ npm test
 
 [Seneca]: http://senecajs.org/
 [winston]: https://www.npmjs.com/package/winston
+[docs]: docs.md
