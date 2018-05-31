@@ -1,6 +1,6 @@
-[4.1.0]
--------
-- [ ] Add jsdoc
+[4.1.0] - 2018-05-31
+--------------------
+- [x] Add JSDoc
 - [x] Add modules/subscribers count at splash screen
 - [x] Add subscribers alias (based on directory name)
 
