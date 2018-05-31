@@ -53,12 +53,20 @@ Kojo instance configuration
 Kojo instance unique ID
 
 **Kind**: instance property of [<code>Kojo</code>](#exp_module_kojo--Kojo)  
+**Example**  
+```
+user-service.zM8n6
+```
 <a name="module_kojo--Kojo+name"></a>
 
 #### kojo.name : <code>String</code>
 Kojo name
 
 **Kind**: instance property of [<code>Kojo</code>](#exp_module_kojo--Kojo)  
+**Example**  
+```
+user-service
+```
 <a name="module_kojo--Kojo+modules"></a>
 
 #### kojo.modules : <code>Object</code>
@@ -67,7 +75,7 @@ if a module has methods, they will be available through dot notation.
 
 **Kind**: instance property of [<code>Kojo</code>](#exp_module_kojo--Kojo)  
 **Example**  
-```
+```js
 const {user, profile} = kojo.modules;
 user.create({...});
 profile.update({...})

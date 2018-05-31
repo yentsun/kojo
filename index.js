@@ -62,12 +62,20 @@ class Kojo {
          * Kojo instance unique ID
          *
          * @type String
+         * @example
+         * ```
+         * user-service.zM8n6
+         * ```
          */
         this.id = id.base();
         /**
          * Kojo name
          *
          * @type String
+         * @example
+         * ```
+         * user-service
+         * ```
          */
         this.name = name;
         this._extras = {};
@@ -77,7 +85,7 @@ class Kojo {
          *
          * @type Object
          * @example
-         * ```
+         * ```js
          * const {user, profile} = kojo.modules;
          * user.create({...});
          * profile.update({...})
