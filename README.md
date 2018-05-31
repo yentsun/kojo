@@ -111,28 +111,6 @@ The following options are available while creating a new Kojo instance:
   one in `process.cwd()` directory)
 
 
-Instance API
-------------
-
-A Kojo instance has the following attributes:
-
-- **name** - instance name, taken from configuration
-- **id** - unique id if the instance, prefixed with `name` (example:
-  `user.Ksk7p`)
-- **config** - configuration object, default options merged with custom
-  ones (see [Configuration](#configuration))
-- **modules** - object, containg modules found in the modules directory;
-  if a module has methods, they will be available through dot notation.
-  Examples: `kojo.modules.user.create()`, `kojo.modules.profile.update()`
-- **ready()** - returns a Promise which resolves after every module and
-  subscriber has been loaded. Always `await` for it before using the
-  instance.
-- **set(key)** - sen an *extra* for the instance. It could be a DB
-  or transport connection, configuration object, a constant, literally
-  anything
-- **get(key)** - get and *extra* previously set with `set()` method
-
-
 Modules and methods
 -------------------
 
@@ -241,6 +219,12 @@ You can always use your own logger, provided you register it as an extra,
 but this logger will, of course, not have this 'smart' feature.
 
 
+Instance API
+------------
+
+Read the [docs].
+
+
 Logic placement strategy
 ------------------------
 
@@ -267,3 +251,4 @@ npm test
 
 [Seneca]: http://senecajs.org/
 [winston]: https://www.npmjs.com/package/winston
+[docs]: docs.md
