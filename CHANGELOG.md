@@ -1,3 +1,8 @@
+[4.2.0]
+-------
+- [x] Change `console.log` to `process.stdout.write` for splash screen
+
+
 [4.1.0] - 2018-05-31
 --------------------
 - [x] Add JSDoc
