@@ -1,6 +1,8 @@
 [4.2.0]
 -------
+- [x] Change logger to Pino
 - [x] Change `console.log` to `process.stdout.write` for splash screen
+- [x] Update dependencies
 
 
 [4.1.0] - 2018-05-31
