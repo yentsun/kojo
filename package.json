@@ -1,6 +1,6 @@
 {
   "name": "kojo",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "description": "An event-driven microservice framework. Kōjō (工場) means 'plant' in Japanese.",
   "main": "index.js",
   "scripts": {
@@ -26,8 +26,8 @@
   "homepage": "https://github.com/yentsun/kojo",
   "dependencies": {
     "lodash.merge": "^4.6.1",
-    "trid": "^0.1.1",
-    "winston": "^2.4.3"
+    "pino": "^4.17.3",
+    "trid": "^0.1.1"
   },
   "engine-strict": true,
   "engines": {

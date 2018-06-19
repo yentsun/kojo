@@ -7,6 +7,7 @@ const fs = require('fs');
 const {promisify} = require('util');
 const readDir = promisify(fs.readdir);
 const merge = require('lodash.merge');
+const pino = require('pino');
 const trid = require('trid');
 const Module = require('./lib/Module');
 const logger = require('./lib/logger');
@@ -39,6 +40,7 @@ class Kojo {
      *                                         parent package name version. Default is current project package.json
      * @param options.name {String} - Kojo name (default `工場`)
      * @param options.icon {String} - Kojo icon, usually an emoji (default `☢`)
+     * @param options.logger {Object} - logger (default: smart logger based on Pino)
      */
     constructor(options) {
 
@@ -47,7 +49,8 @@ class Kojo {
             modulesDir: 'modules',
             parentPackage: getParentPackageInfo(),
             name: '工場',
-            icon: '☢'
+            icon: '☢',
+            logger: {}
         };
         this._options = options;
         /**
@@ -58,6 +61,7 @@ class Kojo {
         this.config = this._options ? merge(defaults, this._options) : defaults;
         const {name} = this.config;
         const id = new trid({prefix: name});
+
         /**
          * Kojo instance unique ID
          *
@@ -68,6 +72,7 @@ class Kojo {
          * ```
          */
         this.id = id.base();
+
         /**
          * Kojo name
          *
@@ -78,6 +83,17 @@ class Kojo {
          * ```
          */
         this.name = name;
+        /**
+         * Logger instance
+         *
+         * @type String
+         * @example
+         * ```
+         * kojo.logger.info('server started')
+         * ```
+         */
+        this.logger = pino(options.logger);
+
         this._extras = {};
         /**
          * Loaded modules found in the modules directory;
@@ -135,7 +151,7 @@ class Kojo {
             if (error.code === 'ENOENT' && error.path === modulesDir && !kojo._options.modulesDir)
                 process.stdout.write(`    ${icon} skipping modules\n`);
             else {
-                console.log('error');
+                process.stdout.write('error\n');
                 throw error;
             }
         }
@@ -153,6 +169,7 @@ class Kojo {
                 const requirePath = path.join(subsDir, subscriberFile);
                 kojo._subscribers.push(subName);
                 let subsWrapper = require(requirePath);
+
                 subsDone.push(subsWrapper(kojo, logger(kojo, 'sub', subName)));
             });
             await Promise.all(subsDone);
