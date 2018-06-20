@@ -1,6 +1,7 @@
 [4.2.0]
 -------
-- [x] Change logger to Pino
+- [x] Introduce `options.loglevel`
+- [x] Change logger to chalked loglevel
 - [x] Change `console.log` to `process.stdout.write` for splash screen
 - [x] Update dependencies
 

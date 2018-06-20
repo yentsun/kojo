@@ -33,6 +33,7 @@ Create Kojo instance
 | options.parentPackage | <code>Object</code> | parent package, Kojo is running from. Needed to just display                                         parent package name version. Default is current project package.json |
 | options.name | <code>String</code> | Kojo name (default `工場`) |
 | options.icon | <code>String</code> | Kojo icon, usually an emoji (default `☢`) |
+| options.loglevel | <code>Object</code> | the log level (default: `debug`) |
 
 **Example**  
 ```js
@@ -121,7 +122,7 @@ Get (previously `set`) value from global context.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| [key] | <code>String</code> | key string (optional). If omitted, returns all extras,                         which is useful for destructing syntax |
+| [key] | <code>String</code> | key string (optional). If omitted, returns all extras,                        which is useful for destructing syntax |
 
 **Example**  
 ```js
