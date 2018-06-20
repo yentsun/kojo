@@ -39,6 +39,7 @@ class Kojo {
      *                                         parent package name version. Default is current project package.json
      * @param options.name {String} - Kojo name (default `工場`)
      * @param options.icon {String} - Kojo icon, usually an emoji (default `☢`)
+     * @param options.loglevel {Object} - the log level (default: `debug`)
      */
     constructor(options) {
 
@@ -47,7 +48,8 @@ class Kojo {
             modulesDir: 'modules',
             parentPackage: getParentPackageInfo(),
             name: '工場',
-            icon: '☢'
+            icon: '☢',
+            loglevel: 'debug'
         };
         this._options = options;
         /**
@@ -58,6 +60,7 @@ class Kojo {
         this.config = this._options ? merge(defaults, this._options) : defaults;
         const {name} = this.config;
         const id = new trid({prefix: name});
+
         /**
          * Kojo instance unique ID
          *
@@ -68,6 +71,7 @@ class Kojo {
          * ```
          */
         this.id = id.base();
+
         /**
          * Kojo name
          *
@@ -78,6 +82,7 @@ class Kojo {
          * ```
          */
         this.name = name;
+
         this._extras = {};
         /**
          * Loaded modules found in the modules directory;
@@ -135,7 +140,7 @@ class Kojo {
             if (error.code === 'ENOENT' && error.path === modulesDir && !kojo._options.modulesDir)
                 process.stdout.write(`    ${icon} skipping modules\n`);
             else {
-                console.log('error');
+                process.stdout.write('error\n');
                 throw error;
             }
         }
@@ -153,7 +158,8 @@ class Kojo {
                 const requirePath = path.join(subsDir, subscriberFile);
                 kojo._subscribers.push(subName);
                 let subsWrapper = require(requirePath);
-                subsDone.push(subsWrapper(kojo, logger(kojo, 'sub', subName)));
+
+                subsDone.push(subsWrapper(kojo, logger(kojo, '', subName, 'bold').getLogger(subName)));
             });
             await Promise.all(subsDone);
             process.stdout.write(` done (${Object.keys(kojo._subscribers).length})\n`);
