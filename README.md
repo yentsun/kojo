@@ -167,9 +167,9 @@ Subscribers
 
 *Subscriber* exports an async function that is **called once** during kojo
 initialization and is not avalable otherwise. It is supposed to have a
-single subscription to a pub/sub transport subject or module's event
-and is recommended to be named after this subject / event name. For
-example, `subscribers/user.registered.js`:
+single subscription to a pub/sub transport subject or module's internal
+event, or http route and is recommended to be named accordingly. For
+example, `subscribers/internal.user.registered.js`:
 ```js
 module.exports = async (kojo, logger) => {
 
@@ -189,7 +189,7 @@ has kojo instance and logger as arguments, not context.
 Logger
 ------
 
-Kojo uses [winston] logger for 'smart' logging from subscribers and modules.
+Kojo uses [loglevel] logger for 'smart' logging from subscribers and modules.
 'Smart' means that if you log from method `user.register`, log entries
 will include "user.register":
 ```js
@@ -197,7 +197,7 @@ logger.debug('registering', userData);
 ```
 
 ```
-2018-04-29T09:51:49.674Z test.QOmup DEBUG [user.register] registering {...}
+☢ test.QOmup DEBUG [user.register] registering {...}
 ```
 
 You can always use your own logger, provided you register it as an extra,
@@ -235,5 +235,5 @@ npm test
 
 
 [Seneca]: http://senecajs.org/
-[winston]: https://www.npmjs.com/package/winston
+[loglevel]: https://www.npmjs.com/package/loglevel
 [docs]: docs.md
