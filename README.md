@@ -96,21 +96,6 @@ return main();
 ```
 
 
-Configuration
--------------
-
-The following options are available while creating a new Kojo instance:
-
-- **name** - kojo name, useful for identification and will apear in
-  logs (default `工場`)
-- **icon** - another means if distinguishing your microservices
-  (default `☢`)
-- **subsDir** - subscribers directory (default `subscribers`)
-- **modulesDir** - modules directory (default `modules`)
-- **parentPackage** - package.json of the parent package (default is the
-  one in `process.cwd()` directory)
-
-
 Modules and methods
 -------------------
 
@@ -219,8 +204,8 @@ You can always use your own logger, provided you register it as an extra,
 but this logger will, of course, not have this 'smart' feature.
 
 
-Instance API
-------------
+Docs
+----
 
 Read the [docs].
 
