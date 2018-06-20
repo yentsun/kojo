@@ -1,5 +1,5 @@
-[4.2.0]
--------
+[4.2.0] - 2018-06-20
+--------------------
 - [x] Introduce `options.loglevel`
 - [x] Change logger to chalked loglevel
 - [x] Change `console.log` to `process.stdout.write` for splash screen
