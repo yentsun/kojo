@@ -10,7 +10,8 @@ describe('kojo', () => {
         subsDir: './test/test_kojo/subscribers',
         modulesDir: './test/test_kojo/modules',
         name: 'test',
-        icon: '🚩'
+        icon: '🚩',
+        loglevel: 'trace'
     };
     let kojo;
 

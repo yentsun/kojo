@@ -39,6 +39,7 @@ class Kojo {
      *                                         parent package name version. Default is current project package.json
      * @param options.name {String} - Kojo name (default `工場`)
      * @param options.icon {String} - Kojo icon, usually an emoji (default `☢`)
+     * @param options.loglevel {Object} - the log level (default: `debug`)
      */
     constructor(options) {
 
@@ -47,7 +48,8 @@ class Kojo {
             modulesDir: 'modules',
             parentPackage: getParentPackageInfo(),
             name: '工場',
-            icon: '☢'
+            icon: '☢',
+            loglevel: 'debug'
         };
         this._options = options;
         /**
@@ -58,18 +60,29 @@ class Kojo {
         this.config = this._options ? merge(defaults, this._options) : defaults;
         const {name} = this.config;
         const id = new trid({prefix: name});
+
         /**
          * Kojo instance unique ID
          *
          * @type String
+         * @example
+         * ```
+         * user-service.zM8n6
+         * ```
          */
         this.id = id.base();
+
         /**
          * Kojo name
          *
          * @type String
+         * @example
+         * ```
+         * user-service
+         * ```
          */
         this.name = name;
+
         this._extras = {};
         /**
          * Loaded modules found in the modules directory;
@@ -77,7 +90,7 @@ class Kojo {
          *
          * @type Object
          * @example
-         * ```
+         * ```js
          * const {user, profile} = kojo.modules;
          * user.create({...});
          * profile.update({...})
@@ -106,9 +119,9 @@ class Kojo {
         const kojo = this;
         const {icon, parentPackage} = kojo.config;
 
-        console.log('*************************************************************');
-        console.log(`  ${icon} ${kojo.id}  |  ${parentPackage.name}@${parentPackage.version}  |  ${kojoPackage.name}@${kojoPackage.version}`);
-        console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+        process.stdout.write('*************************************************************\n');
+        process.stdout.write(`  ${icon} ${kojo.id}  |  ${parentPackage.name}@${parentPackage.version}  |  ${kojoPackage.name}@${kojoPackage.version}\n`);
+        process.stdout.write('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n');
 
         // MODULES
 
@@ -122,12 +135,12 @@ class Kojo {
                 const moduleName = path.basename(modulePath);
                 kojo.modules[moduleName] = new Module(moduleName, modulePath, kojo);
             });
-            console.log(` done (${Object.keys(kojo.modules).length})`);
+            process.stdout.write(` done (${Object.keys(kojo.modules).length})\n`);
         } catch (error) {
             if (error.code === 'ENOENT' && error.path === modulesDir && !kojo._options.modulesDir)
-                console.log(`    ${icon} skipping modules`);
+                process.stdout.write(`    ${icon} skipping modules\n`);
             else {
-                console.log('error');
+                process.stdout.write('error\n');
                 throw error;
             }
         }
@@ -145,19 +158,20 @@ class Kojo {
                 const requirePath = path.join(subsDir, subscriberFile);
                 kojo._subscribers.push(subName);
                 let subsWrapper = require(requirePath);
-                subsDone.push(subsWrapper(kojo, logger(kojo, 'sub', subName)));
+
+                subsDone.push(subsWrapper(kojo, logger(kojo, '', subName, 'bold').getLogger(subName)));
             });
             await Promise.all(subsDone);
-            console.log(` done (${Object.keys(kojo._subscribers).length})`);
+            process.stdout.write(` done (${Object.keys(kojo._subscribers).length})\n`);
         } catch (error) {
             if (error.code === 'ENOENT' && error.path === subsDir) {
-                console.log(`    ${icon} skipping subscribers`);
+                process.stdout.write(`    ${icon} skipping subscribers\n`);
             } else
                 throw error;
         }
 
-        console.log(`    ${icon} kojo "${kojo.name}" ready`);
-        console.log('*************************************************************');
+        process.stdout.write(`    ${icon} kojo "${kojo.name}" ready\n`);
+        process.stdout.write('*************************************************************\n');
     }
 
     /**
@@ -182,7 +196,7 @@ class Kojo {
      *
      * @instance
      * @param {String=} key - key string (optional). If omitted, returns all extras,
-     *                         which is useful for destructing syntax
+     *                        which is useful for destructing syntax
      * @returns {*}
      * @example
      * ```js
