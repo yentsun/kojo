@@ -1,3 +1,8 @@
+[4.3.0]
+-------
+- [x] Module's method can be a sync function
+
+
 [4.2.0] - 2018-06-20
 --------------------
 - [x] Introduce `options.loglevel`

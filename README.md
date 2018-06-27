@@ -149,8 +149,10 @@ profile.on('created', (newProfile) => {
 
 ```
 
- Thus
-you can create 'internal' subscribers that listen to module's events.
+Thus, you can create 'internal' subscribers that listen to module's events.
+
+Note: *Methods named `test` are ignored and not registered. These are
+reserved for unit tests.*
 
 
 Subscribers
