@@ -1,6 +1,7 @@
-[4.3.0]
--------
+[4.3.0] - 2018-06-27
+--------------------
 - [x] Module's method can be a sync function
+- [x] Day of birth
 
 
 [4.2.0] - 2018-06-20
