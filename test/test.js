@@ -46,13 +46,13 @@ describe('kojo', () => {
         assert.equal(rub, '튎嵸覆');
     });
 
-    it('checks whether kojo accessible inside methods (with 2 params)', async function () {
+    it('checks whether kojo accessible inside methods (with 2 params)', async () => {
         kojo.set('variable', 12);
         const result = await kojo.modules.charlie.methodA(3);
         assert.equal(result, 36);
     });
 
-    it('has promise rejected if module throws', async function () {
+    it('has promise rejected if module throws', async () => {
         try {
             await kojo.modules.alpha.methodZ();
         } catch (error) {
@@ -60,13 +60,27 @@ describe('kojo', () => {
         }
     });
 
-    it('checks exception logging (with 2 params)', async function () {
+    it('checks exception logging (with 2 params)', async () => {
         try {
             await kojo.module('charlie').methodA();
         } catch (error) {
             // Just to mark test passed. You should see the error logged
         }
     });
+
+    it('allows a method to be a sync function', (done) => {
+        assert.equal(kojo.modules.bravo.syncMethod('Im ', 'sync'), 'Im sync');
+        done();
+    });
+
+    it('handles errors from sync method', (done) => {
+        try {
+            kojo.modules.bravo.syncFailingMethod();
+        } catch (error) {
+            assert.equal(error.message, 'Expected failure occurred');
+            done();
+        }
+    })
 
 });
 

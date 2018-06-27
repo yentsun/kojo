@@ -34,6 +34,7 @@ Create Kojo instance
 | options.name | <code>String</code> | Kojo name (default `工場`) |
 | options.icon | <code>String</code> | Kojo icon, usually an emoji (default `☢`) |
 | options.loglevel | <code>Object</code> | the log level (default: `debug`) |
+| options.loggerIdPrefix | <code>Boolean</code> | shall logger use Kojo ID prefix? (default: false) |
 
 **Example**  
 ```js
