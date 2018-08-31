@@ -13,7 +13,10 @@
   },
   "keywords": [
     "event",
-    "microservice"
+    "microservice",
+    "scaffold",
+    "framework",
+    "microframework"
   ],
   "author": "Maxim Korinets <mkorinets@gmail.com> (http://korinets.name/)",
   "contributors": [
@@ -27,13 +30,11 @@
   "dependencies": {
     "chalk": "^2.4.1",
     "lodash.merge": "^4.6.1",
-    "loglevel": "^1.6.1",
-    "loglevel-plugin-prefix": "^0.8.4",
     "trid": "^0.1.1"
   },
   "engine-strict": true,
   "engines": {
-    "node": "lts"
+    "node": ">=8.11.4"
   },
   "devDependencies": {
     "coveralls": "^3.0.1",
