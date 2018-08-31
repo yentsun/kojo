@@ -1,3 +1,11 @@
+[5.0.0]
+-------
+- [x] Remove `TRACE` log level
+- [x] Remove `loglevel` from dependencies
+- [x] Switch Logger to custom one (that uses `process.stdout.write`)
+- [ ] Rename `modules` to `services`
+
+
 [4.3.0] - 2018-06-27
 --------------------
 - [x] Module's method can be a sync function
@@ -28,7 +36,7 @@
 --------------------
 - [x] Single options object with default values
 - [x] Allow module-less / subscriber-less config
-- [x] Modules are accessible via `kojo.modules.moduleName`
+- [x] Modules are accessible via `kojo.modules.serviceName`
 - [x] Drop `kojo.module()` method
 - [x] Add more docs
 
