@@ -9,7 +9,7 @@ const readDir = promisify(fs.readdir);
 const merge = require('lodash.merge');
 const trid = require('trid');
 const Module = require('./lib/Module');
-const logger = require('./lib/logger');
+const Logger = require('./lib/logger');
 const {getParentPackageInfo} = require('./lib/util');
 const kojoPackage = require('./package');
 
@@ -161,7 +161,7 @@ class Kojo {
                 kojo._subscribers.push(subName);
                 let subsWrapper = require(requirePath);
 
-                subsDone.push(subsWrapper(kojo, logger(kojo, '', subName, 'bold').getLogger(subName)));
+                subsDone.push(subsWrapper(kojo, new Logger(kojo, null, subName, 'bold')));
             });
             await Promise.all(subsDone);
             process.stdout.write(` done (${Object.keys(kojo._subscribers).length})\n`);
@@ -172,12 +172,12 @@ class Kojo {
                 throw error;
         }
 
-        process.stdout.write(`    ${icon} kojo "${kojo.name}" ready\n`);
+        process.stdout.write(`    ${icon} kojo "${kojo.name}" ready [${process.env.NODE_ENV}]\n`);
         process.stdout.write('*************************************************************\n');
     }
 
     /**
-     * Set global context key/value. Anything goes here - DB, transport connections,
+     * Set key/value to the global context. Anything goes here - DB, transport connections,
      * configuration objects, etc. This is also called setting an 'extra'.
      *
      * @instance
