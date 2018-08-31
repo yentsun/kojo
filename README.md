@@ -8,9 +8,9 @@ The idea of this framework emerged after couple of years of using
 [Seneca], which in turn is a great tool for microservices but is probably
 too abstract and complex.
 
-Kojo, on the other hand, is very simple: it has subscribers, modules and
+Kojo, on the other hand, is very simple: it has subscribers, services and
 methods which are just plain functions. *Subscribers* susbscribe to a
-pub/sub (or request/response) transport of your choice, *modules* perform
+pub/sub (or request/response) transport of your choice, *services* perform
 various tasks via *methods*.
 
 [![Build Status](https://travis-ci.org/yentsun/kojo.svg?branch=master)](https://travis-ci.org/yentsun/kojo)
@@ -31,7 +31,7 @@ Installation
 Usage
 -----
  
-Create a module with a method (`modules/user/create.js`):
+Create a module with a method (`services/user/create.js`):
 
  ```js
 module.exports = async function (userData) {
@@ -55,7 +55,7 @@ Create a subscriber (`subscribers/user.create.js`):
  ```js
 module.exports = (kojo, logger) => {
 
-    const {user} = kojo.modules;  // we defined `user` module above
+    const {user} = kojo.services;  // we defined `user` module above
     const nats = kojo.get('nats'); // as with pg connection above we have nats connection too
 
     nats.subscribe('user.create', async (userData) => {
@@ -88,7 +88,7 @@ async function main() {
     const nats = new NATS({...});
     kojo.set('nats', nats);
 
-    await kojo.ready();  // await for modules and subscribers to initialize
+    await kojo.ready();  // await for services and subscribers to initialize
 }
 
 return main();
@@ -96,7 +96,7 @@ return main();
 ```
 
 
-Modules and methods
+services and methods
 -------------------
 
 *Module* is just a directory with files that represent *methods*. For
@@ -104,7 +104,7 @@ example:
 
 ```
 🗀 kojo/
-├── 🗀 modules/
+├── 🗀 services/
 │   ├── 🗀 user/
 │   │   ├── 🖹 register.js
 │   │   ├── 🖹 update.js
@@ -115,10 +115,10 @@ example:
 │       ├── 🖹 update.js
 │       └── ...
 ```
-We see two modules `user` and `profile` both of which have some methods.
+We see two services `user` and `profile` both of which have some methods.
 These methods are available from anywhere via kojo instance:
-- `kojo.modules.user.list()`
-- `kojo.modules.profile.update()`
+- `kojo.services.user.list()`
+- `kojo.services.profile.update()`
 - etc
 
 A method file must export an `async` function that (usually) returns a value.
@@ -128,7 +128,7 @@ module.exports = async function () {
 
     const {kojo, logger} = this;  // instance and logger in context
     ...
-    const {profile} = kojo.modules;
+    const {profile} = kojo.services;
     logger.debug('creating profile', userData);
     return await profile.create(userData);
 };
@@ -136,10 +136,10 @@ module.exports = async function () {
 **Important: for method's context to be available, the method must be
 defined via `function() {}`, not arrow `()==>{}`**
 
-Modules are also `EventEmitter`s and can publish internal events:
+services are also `EventEmitter`s and can publish internal events:
 ```js
 ...
-const {profile} = kojo.modules;
+const {profile} = kojo.services;
 ...
 profile.emit('created', newProfile);
 ...
@@ -175,7 +175,7 @@ example, `subscribers/internal.user.registered.js`:
 ```js
 module.exports = async (kojo, logger) => {
 
-    const {user} = kojo.modules;
+    const {user} = kojo.services;
     const nats = kojo.get('nats');
     user.on('registered', (newUser) => {
         logger.debug('publishing notification');
@@ -191,7 +191,7 @@ has kojo instance and logger as arguments, not context.
 Logger
 ------
 
-Kojo uses [loglevel] logger for 'smart' logging from subscribers and modules.
+Kojo uses a custom mechanism for 'smart' logging from subscribers and services.
 'Smart' means that if you log from method `user.register`, log entries
 will include "user.register":
 ```js
@@ -216,16 +216,16 @@ Logic placement strategy
 ------------------------
 
 It is sometimes difficult to decide on where business logic should
-reside: subscribers or modules. A rule of a thumb could be the
+reside: subscribers or services. A rule of a thumb could be the
 following - **place logic inside subscribers when in doubt**. When code
 starts repeating or getting complicated - its time for
-introducing some modules to keep it DRY and maintainable.
+introducing some services to keep it DRY and maintainable.
 
 Subscriber should be the single point of entry for an event bound to your
 microservice, external or internal. You should be able to easily tell
 what exactly a microservice is responsible for by just looking at its
 subscribers directory. You can then track the rest of the logic by
-inspecting a subscriber and following the modules it uses.
+inspecting a subscriber and following the services it uses.
 
 
 Test
