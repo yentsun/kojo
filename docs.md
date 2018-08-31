@@ -99,7 +99,7 @@ await kojo.ready();
 <a name="module_kojo--Kojo+set"></a>
 
 #### kojo.set(key, value)
-Set global context key/value. Anything goes here - DB, transport connections,
+Set key/value to the global context. Anything goes here - DB, transport connections,
 configuration objects, etc. This is also called setting an 'extra'.
 
 **Kind**: instance method of [<code>Kojo</code>](#exp_module_kojo--Kojo)  
