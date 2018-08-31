@@ -11,7 +11,7 @@ describe('kojo', () => {
         modulesDir: './test/test_kojo/modules',
         name: 'test',
         icon: '🚩',
-        loglevel: 'trace'
+        loglevel: 'debug'
     };
     let kojo;
 
