@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "docs": "./node_modules/.bin/jsdoc2md --template ./docs_template.hbs ./index.js > docs.md"
+    "docs": "./node_modules/.bin/jsdoc2md --template ./docs_template.hbs ./*.js > docs.md"
   },
   "repository": {
     "type": "git",

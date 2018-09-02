@@ -8,10 +8,10 @@ describe('kojo', () => {
     const methodAcalledSpy = sinon.spy();
     const options = {
         subsDir: './test/test_kojo/subscribers',
-        modulesDir: './test/test_kojo/modules',
+        serviceDir: './test/test_kojo/services',
         name: 'test',
         icon: '🚩',
-        loglevel: 'debug'
+        logLevel: 'debug'
     };
     let kojo;
 
@@ -22,19 +22,19 @@ describe('kojo', () => {
         kojo.set('rub', '튎嵸覆');
     });
 
-    it('loads modules available to each other', async () => {
-        kojo.modules.alpha.on('aCalled', methodAcalledSpy);
-        const result = await kojo.modules.alpha.methodA([]);
+    it('loads services available to each other', async () => {
+        kojo.services.alpha.on('aCalled', methodAcalledSpy);
+        const result = await kojo.services.alpha.methodA([]);
         assert.equal(result, 'bravo');
     });
 
-    it('lets modules to emit events', (done) => {
+    it('lets services to emit events', (done) => {
         assert(methodAcalledSpy.calledOnce);
         done();
     });
 
     it('loads config and extras', async () => {
-        const nats = await kojo.modules.alpha.methodB();
+        const nats = await kojo.services.alpha.methodB();
         assert(nats.connection);
         assert.equal(nats.host, 'natsHost');
     });
@@ -48,13 +48,13 @@ describe('kojo', () => {
 
     it('checks whether kojo accessible inside methods (with 2 params)', async () => {
         kojo.set('variable', 12);
-        const result = await kojo.modules.charlie.methodA(3);
+        const result = await kojo.services.charlie.methodA(3);
         assert.equal(result, 36);
     });
 
     it('has promise rejected if module throws', async () => {
         try {
-            await kojo.modules.alpha.methodZ();
+            await kojo.services.alpha.methodZ();
         } catch (error) {
             assert.equal(error.message, 'Synthetic method error');
         }
@@ -69,13 +69,13 @@ describe('kojo', () => {
     });
 
     it('allows a method to be a sync function', (done) => {
-        assert.equal(kojo.modules.bravo.syncMethod('Im ', 'sync'), 'Im sync');
+        assert.equal(kojo.services.bravo.syncMethod('Im ', 'sync'), 'Im sync');
         done();
     });
 
     it('handles errors from sync method', (done) => {
         try {
-            kojo.modules.bravo.syncFailingMethod();
+            kojo.services.bravo.syncFailingMethod();
         } catch (error) {
             assert.equal(error.message, 'Expected failure occurred');
             done();
@@ -89,7 +89,7 @@ describe('broken kojo', () => {
     const options = {
         name: 'broken',
         subsDir: './test/broken_kojo/subscribers',
-        modulesDir: './test/broken_kojo/modules'
+        modulesDir: './test/broken_kojo/services'
     };
 
     it('throws on broken module', async () => {
@@ -107,7 +107,7 @@ describe('nameless kojo', () => {
 
     const options = {
         subsDir: './test/test_kojo/subscribers',
-        modulesDir: './test/test_kojo/modules'
+        serviceDir: './test/test_kojo/services'
     };
 
     it('is assigned a default name', async () => {

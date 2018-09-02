@@ -8,7 +8,7 @@ API Documentation
         * [.config](#module_kojo--Kojo+config) : <code>Object</code>
         * [.id](#module_kojo--Kojo+id) : <code>String</code>
         * [.name](#module_kojo--Kojo+name) : <code>String</code>
-        * [.modules](#module_kojo--Kojo+modules) : <code>Object</code>
+        * [.services](#module_kojo--Kojo+services) : <code>Object</code>
         * [.ready()](#module_kojo--Kojo+ready) ⇒ <code>Promise</code>
         * [.set(key, value)](#module_kojo--Kojo+set)
         * [.get([key])](#module_kojo--Kojo+get) ⇒ <code>\*</code>
@@ -29,7 +29,7 @@ Create Kojo instance
 | --- | --- | --- |
 | options | <code>Object</code> | configuration options |
 | options.subsDir | <code>String</code> | subscribers directory (relative to project root) |
-| options.modulesDir | <code>String</code> | subscribers directory (relative to project root) |
+| options.serviceDir | <code>String</code> | service directory (relative to project root) |
 | options.parentPackage | <code>Object</code> | parent package, Kojo is running from. Needed to just display                                         parent package name version. Default is current project package.json |
 | options.name | <code>String</code> | Kojo name (default `工場`) |
 | options.icon | <code>String</code> | Kojo icon, usually an emoji (default `☢`) |
@@ -69,23 +69,23 @@ Kojo name
 ```
 user-service
 ```
-<a name="module_kojo--Kojo+modules"></a>
+<a name="module_kojo--Kojo+services"></a>
 
-#### kojo.modules : <code>Object</code>
-Loaded modules found in the modules directory;
-if a module has methods, they will be available through dot notation.
+#### kojo.services : <code>Object</code>
+Loaded services found in the services directory;
+if a service has methods, they will be available through dot notation.
 
 **Kind**: instance property of [<code>Kojo</code>](#exp_module_kojo--Kojo)  
 **Example**  
 ```js
-const {user, profile} = kojo.modules;
+const {user, profile} = kojo.services;
 user.create({...});
 profile.update({...})
 ```
 <a name="module_kojo--Kojo+ready"></a>
 
 #### kojo.ready() ⇒ <code>Promise</code>
-Bootstrap Kojo instance. Resolves after every module and
+Bootstrap Kojo instance. Resolves after every service and
 subscriber has been loaded. Always `await` for it before using Kojo
 instance.
 

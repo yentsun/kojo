@@ -3,7 +3,7 @@
 - [x] Remove `TRACE` log level
 - [x] Remove `loglevel` from dependencies
 - [x] Switch Logger to custom one (that uses `process.stdout.write`)
-- [ ] Rename `modules` to `services`
+- [ ] Rename `services` to `services`
 
 
 [4.3.0] - 2018-06-27
@@ -23,7 +23,7 @@
 [4.1.0] - 2018-05-31
 --------------------
 - [x] Add JSDoc
-- [x] Add modules/subscribers count at splash screen
+- [x] Add services/subscribers count at splash screen
 - [x] Add subscribers alias (based on directory name)
 
 
@@ -36,7 +36,7 @@
 --------------------
 - [x] Single options object with default values
 - [x] Allow module-less / subscriber-less config
-- [x] Modules are accessible via `kojo.modules.serviceName`
+- [x] Modules are accessible via `kojo.services.serviceName`
 - [x] Drop `kojo.module()` method
 - [x] Add more docs
 
@@ -128,7 +128,7 @@
 
 [1.1.0] - 2017-07-04
 --------------------
-- [x] ADDED support for modules written using promises
+- [x] ADDED support for services written using promises
 
 
 [1.0.0] - 2017-06-07
