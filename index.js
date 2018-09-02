@@ -39,7 +39,7 @@ class Kojo {
      *                                         parent package name version. Default is current project package.json
      * @param options.name {String} - Kojo name (default `工場`)
      * @param options.icon {String} - Kojo icon, usually an emoji (default `☢`)
-     * @param options.loglevel {Object} - the log level (default: `debug`)
+     * @param options.logLevel {Object} - the log level (default: `debug`)
      * @param options.loggerIdPrefix {Boolean} - shall logger use Kojo ID prefix? (default: false)
      */
     constructor(options) {
@@ -50,7 +50,7 @@ class Kojo {
             parentPackage: getParentPackageInfo(),
             name: '工場',
             icon: '☢',
-            loglevel: 'debug',
+            logLevel: 'debug',
             loggerIdPrefix: false
         };
         this._options = options;
