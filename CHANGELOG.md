@@ -1,3 +1,12 @@
+[5.0.0] - 2018-09-02
+--------------------
+- [x] Remove `TRACE` and `WARN` log level
+- [x] Remove `loglevel` from dependencies
+- [x] Switch Logger to custom one (that uses `process.stdout.write`)
+- [x] Rename `loglevel` option to `logLevel`
+- [x] Rename `modules` to `services`
+
+
 [4.3.0] - 2018-06-27
 --------------------
 - [x] Module's method can be a sync function
@@ -15,7 +24,7 @@
 [4.1.0] - 2018-05-31
 --------------------
 - [x] Add JSDoc
-- [x] Add modules/subscribers count at splash screen
+- [x] Add services/subscribers count at splash screen
 - [x] Add subscribers alias (based on directory name)
 
 
@@ -28,7 +37,7 @@
 --------------------
 - [x] Single options object with default values
 - [x] Allow module-less / subscriber-less config
-- [x] Modules are accessible via `kojo.modules.moduleName`
+- [x] Modules are accessible via `kojo.services.serviceName`
 - [x] Drop `kojo.module()` method
 - [x] Add more docs
 
@@ -120,7 +129,7 @@
 
 [1.1.0] - 2017-07-04
 --------------------
-- [x] ADDED support for modules written using promises
+- [x] ADDED support for services written using promises
 
 
 [1.0.0] - 2017-06-07

@@ -8,8 +8,8 @@ const {promisify} = require('util');
 const readDir = promisify(fs.readdir);
 const merge = require('lodash.merge');
 const trid = require('trid');
-const Module = require('./lib/Module');
-const logger = require('./lib/logger');
+const Service = require('./lib/Service');
+const Logger = require('./lib/logger');
 const {getParentPackageInfo} = require('./lib/util');
 const kojoPackage = require('./package');
 
@@ -34,23 +34,23 @@ class Kojo {
      *
      * @param options {Object} - configuration options
      * @param options.subsDir {String} - subscribers directory (relative to project root)
-     * @param options.modulesDir {String} - subscribers directory (relative to project root)
+     * @param options.serviceDir {String} - service directory (relative to project root)
      * @param options.parentPackage {Object} - parent package, Kojo is running from. Needed to just display
      *                                         parent package name version. Default is current project package.json
      * @param options.name {String} - Kojo name (default `工場`)
      * @param options.icon {String} - Kojo icon, usually an emoji (default `☢`)
-     * @param options.loglevel {Object} - the log level (default: `debug`)
+     * @param options.logLevel {Object} - the log level (default: `debug`)
      * @param options.loggerIdPrefix {Boolean} - shall logger use Kojo ID prefix? (default: false)
      */
     constructor(options) {
 
         const defaults = {
             subsDir: 'subscribers',
-            modulesDir: 'modules',
+            serviceDir: 'services',
             parentPackage: getParentPackageInfo(),
             name: '工場',
             icon: '☢',
-            loglevel: 'debug',
+            logLevel: 'debug',
             loggerIdPrefix: false
         };
         this._options = options;
@@ -87,23 +87,23 @@ class Kojo {
 
         this._extras = {};
         /**
-         * Loaded modules found in the modules directory;
-         * if a module has methods, they will be available through dot notation.
+         * Loaded services found in the services directory;
+         * if a service has methods, they will be available through dot notation.
          *
          * @type Object
          * @example
          * ```js
-         * const {user, profile} = kojo.modules;
+         * const {user, profile} = kojo.services;
          * user.create({...});
          * profile.update({...})
          * ```
          */
-        this.modules = {};
+        this.services = {};
         this._subscribers = [];
     }
 
     /**
-     * Bootstrap Kojo instance. Resolves after every module and
+     * Bootstrap Kojo instance. Resolves after every service and
      * subscriber has been loaded. Always `await` for it before using Kojo
      * instance.
      *
@@ -125,22 +125,22 @@ class Kojo {
         process.stdout.write(`  ${icon} ${kojo.id}  |  ${parentPackage.name}@${parentPackage.version}  |  ${kojoPackage.name}@${kojoPackage.version}\n`);
         process.stdout.write('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n');
 
-        // MODULES
+        // SERVICES
 
-        const modulesDir = path.join(process.cwd(), kojo.config.modulesDir);
+        const servicesDir = path.join(process.cwd(), kojo.config.serviceDir);
         try {
-            const moduleDirs = await readDir(modulesDir);
-            process.stdout.write(`    ${icon} loading modules...`);
-            moduleDirs.forEach((moduleDir) => {
-                const modulePath = path.join(modulesDir, moduleDir);
-                if (!fs.lstatSync(modulePath).isDirectory()) return;
-                const moduleName = path.basename(modulePath);
-                kojo.modules[moduleName] = new Module(moduleName, modulePath, kojo);
+            const serviceDirs = await readDir(servicesDir);
+            process.stdout.write(`    ${icon} loading services...`);
+            serviceDirs.forEach((srvDir) => {
+                const servicePath = path.join(servicesDir, srvDir);
+                if (!fs.lstatSync(servicePath).isDirectory()) return;
+                const serviceName = path.basename(servicePath);
+                kojo.services[serviceName] = new Service(serviceName, servicePath, kojo);
             });
-            process.stdout.write(` done (${Object.keys(kojo.modules).length})\n`);
+            process.stdout.write(` done (${Object.keys(kojo.services).length})\n`);
         } catch (error) {
-            if (error.code === 'ENOENT' && error.path === modulesDir && !kojo._options.modulesDir)
-                process.stdout.write(`    ${icon} skipping modules\n`);
+            if (error.code === 'ENOENT' && error.path === servicesDir && !kojo._options.serviceDir)
+                process.stdout.write(`    ${icon} skipping services\n`);
             else {
                 process.stdout.write('error\n');
                 throw error;
@@ -161,7 +161,7 @@ class Kojo {
                 kojo._subscribers.push(subName);
                 let subsWrapper = require(requirePath);
 
-                subsDone.push(subsWrapper(kojo, logger(kojo, '', subName, 'bold').getLogger(subName)));
+                subsDone.push(subsWrapper(kojo, new Logger({kojo, methodName: subName, color: 'bold'})));
             });
             await Promise.all(subsDone);
             process.stdout.write(` done (${Object.keys(kojo._subscribers).length})\n`);
@@ -172,12 +172,12 @@ class Kojo {
                 throw error;
         }
 
-        process.stdout.write(`    ${icon} kojo "${kojo.name}" ready\n`);
+        process.stdout.write(`    ${icon} kojo "${kojo.name}" ready [${process.env.NODE_ENV}]\n`);
         process.stdout.write('*************************************************************\n');
     }
 
     /**
-     * Set global context key/value. Anything goes here - DB, transport connections,
+     * Set key/value to the global context. Anything goes here - DB, transport connections,
      * configuration objects, etc. This is also called setting an 'extra'.
      *
      * @instance
