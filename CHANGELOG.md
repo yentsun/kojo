@@ -1,5 +1,5 @@
-[5.0.0]
--------
+[5.0.0] - 2018-09-02
+--------------------
 - [x] Remove `TRACE` and `WARN` log level
 - [x] Remove `loglevel` from dependencies
 - [x] Switch Logger to custom one (that uses `process.stdout.write`)
