@@ -1,9 +1,10 @@
 [5.0.0]
 -------
-- [x] Remove `TRACE` log level
+- [x] Remove `TRACE` and `WARN` log level
 - [x] Remove `loglevel` from dependencies
 - [x] Switch Logger to custom one (that uses `process.stdout.write`)
-- [ ] Rename `services` to `services`
+- [x] Rename `loglevel` option to `logLevel`
+- [x] Rename `modules` to `services`
 
 
 [4.3.0] - 2018-06-27
