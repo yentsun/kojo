@@ -6,7 +6,7 @@ Japanese.
 
 The idea of this framework emerged after couple of years of using
 [Seneca], which in turn is a great tool for microservices but is probably
-too abstract and complex.
+too abstract.
 
 Kojo, on the other hand, is very simple: it has subscribers, services and
 methods which are just plain functions. *Subscribers* susbscribe to a
