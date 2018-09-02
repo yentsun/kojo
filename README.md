@@ -96,10 +96,10 @@ return main();
 ```
 
 
-services and methods
--------------------
+Services and their methods
+--------------------------
 
-*Module* is just a directory with files that represent *methods*. For
+*Service* is just a directory with files that represent *methods*. For
 example:
 
 ```
@@ -136,7 +136,7 @@ module.exports = async function () {
 **Important: for method's context to be available, the method must be
 defined via `function() {}`, not arrow `()==>{}`**
 
-services are also `EventEmitter`s and can publish internal events:
+Services are also `EventEmitter`s and can publish internal events:
 ```js
 ...
 const {profile} = kojo.services;
@@ -149,7 +149,7 @@ profile.on('created', (newProfile) => {
 
 ```
 
-Thus, you can create 'internal' subscribers that listen to module's events.
+Thus, you can create 'internal' subscribers that listen to service's events.
 
 Note: *Methods named `test` are ignored and not registered. These are
 reserved for unit tests.*
@@ -169,7 +169,7 @@ Subscribers
 
 *Subscriber* exports an async function that is **called once** during kojo
 initialization and is not avalable otherwise. It is supposed to have a
-single subscription to a pub/sub transport subject or module's internal
+single subscription to a pub/sub transport subject or services's internal
 event, or http route and is recommended to be named accordingly. For
 example, `subscribers/internal.user.registered.js`:
 ```js
@@ -184,7 +184,7 @@ module.exports = async (kojo, logger) => {
 };
 
 ```
-Unlike *module method*, subscriber function can be defined via arrow and
+Unlike *service method*, subscriber function can be defined via arrow and
 has kojo instance and logger as arguments, not context.
 
 
@@ -237,5 +237,4 @@ npm test
 
 
 [Seneca]: http://senecajs.org/
-[loglevel]: https://www.npmjs.com/package/loglevel
 [docs]: docs.md
