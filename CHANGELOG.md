@@ -1,5 +1,5 @@
-[5.1.0]
--------
+[5.1.0] - 2018-09-24
+--------------------
 - [x] Make Logger usable separately
 - [x] Optimise Logger
 - [x] Rename `options.loggerIdPrefix` to `options.loggerIdSuffix`
