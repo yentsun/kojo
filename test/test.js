@@ -11,7 +11,8 @@ describe('kojo', () => {
         serviceDir: './test/test_kojo/services',
         name: 'test',
         icon: '🚩',
-        logLevel: 'debug'
+        logLevel: 'debug',
+        loggerIdSuffix: true
     };
     let kojo;
 

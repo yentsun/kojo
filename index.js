@@ -9,7 +9,7 @@ const readDir = promisify(fs.readdir);
 const merge = require('lodash.merge');
 const trid = require('trid');
 const Service = require('./lib/Service');
-const Logger = require('./lib/logger');
+const Logger = require('./lib/Logger');
 const {getParentPackageInfo} = require('./lib/util');
 const kojoPackage = require('./package');
 
@@ -40,7 +40,7 @@ class Kojo {
      * @param options.name {String} - Kojo name (default `工場`)
      * @param options.icon {String} - Kojo icon, usually an emoji (default `☢`)
      * @param options.logLevel {Object} - the log level (default: `debug`)
-     * @param options.loggerIdPrefix {Boolean} - shall logger use Kojo ID prefix? (default: false)
+     * @param options.loggerIdSuffix {Boolean} - shall logger use Kojo ID prefix? (default: false)
      */
     constructor(options) {
 
@@ -51,7 +51,7 @@ class Kojo {
             name: '工場',
             icon: '☢',
             logLevel: 'debug',
-            loggerIdPrefix: false
+            loggerIdSuffix: false
         };
         this._options = options;
         /**
@@ -61,7 +61,7 @@ class Kojo {
          */
         this.config = this._options ? merge(defaults, this._options) : defaults;
         const {name} = this.config;
-        const id = new trid({prefix: name});
+        const id = new trid();
 
         /**
          * Kojo instance unique ID
@@ -161,7 +161,8 @@ class Kojo {
                 kojo._subscribers.push(subName);
                 let subsWrapper = require(requirePath);
 
-                subsDone.push(subsWrapper(kojo, new Logger({kojo, methodName: subName, color: 'bold'})));
+                const loggerId = kojo.config.loggerIdSuffix ? [kojo.name, kojo.id].join('.') : kojo.name;
+                subsDone.push(subsWrapper(kojo, new Logger({id: loggerId, icon, level: kojo.logLevel, tagPieces: [subName], color: 'bold'})));
             });
             await Promise.all(subsDone);
             process.stdout.write(` done (${Object.keys(kojo._subscribers).length})\n`);

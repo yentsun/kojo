@@ -1,3 +1,10 @@
+[5.1.0]
+-------
+- [x] Make Logger usable separately
+- [x] Optimise Logger
+- [x] Rename `options.loggerIdPrefix` to `options.loggerIdSuffix`
+
+
 [5.0.0] - 2018-09-02
 --------------------
 - [x] Remove `TRACE` and `WARN` log level
