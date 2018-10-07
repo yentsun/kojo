@@ -121,7 +121,7 @@ class Kojo {
         const kojo = this;
         const {icon, parentPackage} = kojo.config;
 
-        process.stdout.write('*************************************************************\n');
+        process.stdout.write('\n*************************************************************\n');
         process.stdout.write(`  ${icon} ${kojo.id}  |  ${parentPackage.name}@${parentPackage.version}  |  ${kojoPackage.name}@${kojoPackage.version}\n`);
         process.stdout.write('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n');
 

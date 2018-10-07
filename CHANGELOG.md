@@ -1,3 +1,8 @@
+[5.1.1]
+--------------------
+- [x] Render log entries in one line to prevent separation in pm2
+
+
 [5.1.0] - 2018-09-24
 --------------------
 - [x] Make Logger usable separately
