@@ -8,15 +8,13 @@ The idea of this framework emerged after couple of years of using
 [Seneca], which in turn is a great tool for microservices but is probably
 too abstract.
 
-Kojo, on the other hand, is very simple: it has subscribers, services and
-methods which are just plain functions. *Subscribers* susbscribe to a
-pub/sub (or request/response) transport of your choice, *services* perform
-various tasks via *methods*.
+Kojo, on the other hand, is very straightforward: it has subscribers (or routes, or endpoints),
+services and methods which are just plain functions. *Subscribers* susbscribe to a
+pub/sub (or request/response, or a schedule) transport of your choice and call services
+while *services* perform various tasks via their *methods*.
 
 [![Build Status](https://travis-ci.org/yentsun/kojo.svg?branch=master)](https://travis-ci.org/yentsun/kojo)
 [![Coverage Status](https://coveralls.io/repos/github/yentsun/kojo/badge.svg?branch=master)](https://coveralls.io/github/yentsun/kojo?branch=master)
-[![Dependencies](https://david-dm.org/yentsun/kojo.svg)](https://david-dm.org/yentsun/kojo)
-[![devDependencies Status](https://david-dm.org/yentsun/kojo/dev-status.svg)](https://david-dm.org/yentsun/kojo?type=dev)
 [![Known Vulnerabilities](https://snyk.io/test/github/yentsun/kojo/badge.svg?targetFile=package.json)](https://snyk.io/test/github/yentsun/kojo?targetFile=package.json)
 
 
