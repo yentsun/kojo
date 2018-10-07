@@ -1,4 +1,4 @@
-[5.1.1]
+[5.1.1] - 2018-10-07
 --------------------
 - [x] Render log entries in one line to prevent separation in pm2
 
