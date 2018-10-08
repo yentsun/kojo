@@ -1,3 +1,8 @@
+[5.1.3] - 2018-10-08
+--------------------
+- [x] Move new line char to the end of rendered string @ Logger
+
+
 [5.1.2] - 2018-10-07
 --------------------
 - [x] Render log entries in one line to prevent separation in pm2
