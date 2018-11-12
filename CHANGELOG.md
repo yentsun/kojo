@@ -1,3 +1,8 @@
+[5.2.0]
+-------
+- [x] Provide basic deserialization for object type arguments
+
+
 [5.1.3] - 2018-10-08
 --------------------
 - [x] Move new line char to the end of rendered string @ Logger
