@@ -1,5 +1,5 @@
-[5.2.0]
--------
+[5.2.0] - 2018-11-12
+--------------------
 - [x] Provide basic deserialization for object type arguments
 
 
