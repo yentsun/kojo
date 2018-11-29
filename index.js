@@ -32,15 +32,15 @@ class Kojo {
     /**
      * Create Kojo instance
      *
-     * @param options {Object} - configuration options
-     * @param options.subsDir {String} - subscribers directory (relative to project root)
-     * @param options.serviceDir {String} - service directory (relative to project root)
-     * @param options.parentPackage {Object} - parent package, Kojo is running from. Needed to just display
+     * @param options {object} - configuration options
+     * @param options.subsDir {string} - subscribers directory (relative to project root)
+     * @param options.serviceDir {string} - service directory (relative to project root)
+     * @param options.parentPackage {object} - parent package, Kojo is running from. Needed to just display
      *                                         parent package name version. Default is current project package.json
-     * @param options.name {String} - Kojo name (default `工場`)
-     * @param options.icon {String} - Kojo icon, usually an emoji (default `☢`)
-     * @param options.logLevel {Object} - the log level (default: `debug`)
-     * @param options.loggerIdSuffix {Boolean} - shall logger use Kojo ID prefix? (default: false)
+     * @param options.name {string} - Kojo name (default `工場`)
+     * @param options.icon {string} - Kojo icon, usually an emoji (default `☢`)
+     * @param options.logLevel {string} - the log level (default: `debug`)
+     * @param options.loggerIdSuffix {boolean} - shall logger use Kojo ID prefix? (default: false)
      */
     constructor(options) {
 
@@ -119,7 +119,7 @@ class Kojo {
     async ready() {
 
         const kojo = this;
-        const {icon, parentPackage} = kojo.config;
+        const {icon, parentPackage, logLevel} = kojo.config;
 
         process.stdout.write('\n*************************************************************\n');
         process.stdout.write(`  ${icon} ${kojo.id}  |  ${parentPackage.name}@${parentPackage.version}  |  ${kojoPackage.name}@${kojoPackage.version}\n`);
@@ -162,7 +162,7 @@ class Kojo {
                 let subsWrapper = require(requirePath);
 
                 const loggerId = kojo.config.loggerIdSuffix ? [kojo.name, kojo.id].join('.') : kojo.name;
-                subsDone.push(subsWrapper(kojo, new Logger({id: loggerId, icon, level: kojo.logLevel, tagPieces: [subName], color: 'bold'})));
+                subsDone.push(subsWrapper(kojo, new Logger({id: loggerId, icon, level: logLevel, tagPieces: [subName], color: 'bold'})));
             });
             await Promise.all(subsDone);
             process.stdout.write(` done (${Object.keys(kojo._subscribers).length})\n`);
