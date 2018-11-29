@@ -1,3 +1,8 @@
+[5.2.1]
+-------
+- [x] Fix log level bug for Logger
+
+
 [5.2.0] - 2018-11-12
 --------------------
 - [x] Provide basic deserialization for object type arguments
