@@ -5,7 +5,7 @@ An event-driven microservice framework. Kōjō (工場) means 'factory' in
 Japanese.
 
 The idea of this framework emerged after couple of years of using
-[Seneca], which in turn is a great tool for microservices but is probably
+[Seneca], which in turn is a great tool for building microservices but probably wants to be
 too abstract.
 
 Kojo, on the other hand, is very straightforward: it has subscribers (or routes, or endpoints),
