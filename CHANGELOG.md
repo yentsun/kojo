@@ -1,5 +1,5 @@
-[5.3.0]
--------
+[5.3.0] - 2019-02-10
+--------------------
 - [x] Rename `_extras` to `state`
 - [x] Update dependencies
 
