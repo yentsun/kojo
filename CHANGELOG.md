@@ -1,3 +1,9 @@
+[5.3.0]
+-------
+- [x] Rename `_extras` to `state`
+- [x] Update dependencies
+
+
 [5.2.1] - 2018-11-29
 --------------------
 - [x] Fix log level bug for Logger

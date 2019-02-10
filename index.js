@@ -85,7 +85,7 @@ class Kojo {
          */
         this.name = name;
 
-        this._extras = {};
+        this.state = {};
         /**
          * Loaded services found in the services directory;
          * if a service has methods, they will be available through dot notation.
@@ -191,14 +191,14 @@ class Kojo {
      * ```
      */
     set(key, value) {
-        this._extras[key] = value;
+        this.state[key] = value;
     }
 
     /**
-     * Get (previously `set`) value from global context.
+     * Get (previously `set`) value from state.
      *
      * @instance
-     * @param {String=} key - key string (optional). If omitted, returns all extras,
+     * @param {String=} key - key string (optional). If omitted, returns all state items,
      *                        which is useful for destructing syntax
      * @returns {*}
      * @example
@@ -209,7 +209,7 @@ class Kojo {
      */
     get(key) {
         // TODO handle missing key
-        return key ? this._extras[key]: this._extras;
+        return key ? this.state[key]: this.state;
     }
 
 }
