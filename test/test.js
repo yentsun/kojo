@@ -18,9 +18,9 @@ describe('kojo', () => {
 
     before(async function() {
         kojo = new Kojo(options);
-        await kojo.ready();
         kojo.set('nats', {host: 'natsHost', connection: true});
         kojo.set('rub', '튎嵸覆');
+        await kojo.ready();
     });
 
     it('loads services available to each other', async () => {
@@ -41,7 +41,7 @@ describe('kojo', () => {
     });
 
     it('allows multiple extras unpacking', async () => {
-        const {nats, rub} = await kojo.get();
+        const {nats, rub} = await kojo.state;
         assert(nats.connection);
         assert.equal(nats.host, 'natsHost');
         assert.equal(rub, '튎嵸覆');
