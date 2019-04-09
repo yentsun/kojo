@@ -7,7 +7,6 @@ const fs = require('fs');
 const {promisify} = require('util');
 const {EventEmitter} = require('events');
 const readDir = promisify(fs.readdir);
-const merge = require('lodash.merge');
 const TrID = require('trid');
 const Service = require('./lib/Service');
 const Logger = require('./lib/Logger');
@@ -43,7 +42,7 @@ class Kojo extends EventEmitter {
      * @param options.logLevel {string} - the log level (default: `debug`)
      * @param options.loggerIdSuffix {boolean} - shall logger use Kojo ID prefix? (default: false)
      */
-    constructor(options) {
+    constructor(options={}) {
 
         super();
 
@@ -62,7 +61,7 @@ class Kojo extends EventEmitter {
          *
          * @type Object
          */
-        this.config = this._options ? merge(defaults, this._options) : defaults;
+        this.config = Object.assign(defaults, this._options);
         const {name} = this.config;
         const id = new TrID();
 
