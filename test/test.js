@@ -24,7 +24,7 @@ describe('kojo', () => {
     });
 
     it('loads services available to each other', async () => {
-        kojo.services.alpha.on('aCalled', methodAcalledSpy);
+        kojo.on('aCalled', methodAcalledSpy);
         const result = await kojo.services.alpha.methodA([]);
         assert.equal(result, 'bravo');
     });

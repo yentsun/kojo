@@ -132,22 +132,22 @@ module.exports = async function () {
 };
 ```
 **Important: for method's context to be available, the method must be
-defined via `function() {}`, not arrow `()==>{}`**
+defined via `function() {}`, not arrow `()=>{}`**
 
-Services are also `EventEmitter`s and can publish internal events:
+Kojo is also an `EventEmitter` and can publish internal events:
 ```js
 ...
-const {profile} = kojo.services;
+const {kojo, logger} = this;
 ...
-profile.emit('created', newProfile);
+kojo.emit('profile.created', newProfile);
 ...
-profile.on('created', (newProfile) => {
+kojo.on('profile.created', (newProfile) => {
 ...
 });
 
 ```
 
-Thus, you can create 'internal' subscribers that listen to service's events.
+Thus, you can create 'internal' subscribers that listen to events.
 
 Note: *Methods named `test` are ignored and not registered. These are
 reserved for unit tests.*

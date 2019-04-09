@@ -5,9 +5,9 @@
 const path = require('path');
 const fs = require('fs');
 const {promisify} = require('util');
+const {EventEmitter} = require('events');
 const readDir = promisify(fs.readdir);
-const merge = require('lodash.merge');
-const trid = require('trid');
+const TrID = require('trid');
 const Service = require('./lib/Service');
 const Logger = require('./lib/Logger');
 const {getParentPackageInfo} = require('./lib/util');
@@ -27,7 +27,7 @@ const kojoPackage = require('./package');
  * });
  * ```
  */
-class Kojo {
+class Kojo extends EventEmitter {
 
     /**
      * Create Kojo instance
@@ -42,7 +42,9 @@ class Kojo {
      * @param options.logLevel {string} - the log level (default: `debug`)
      * @param options.loggerIdSuffix {boolean} - shall logger use Kojo ID prefix? (default: false)
      */
-    constructor(options) {
+    constructor(options={}) {
+
+        super();
 
         const defaults = {
             subsDir: 'subscribers',
@@ -59,9 +61,9 @@ class Kojo {
          *
          * @type Object
          */
-        this.config = this._options ? merge(defaults, this._options) : defaults;
+        this.config = Object.assign(defaults, this._options);
         const {name} = this.config;
-        const id = new trid();
+        const id = new TrID();
 
         /**
          * Kojo instance unique ID

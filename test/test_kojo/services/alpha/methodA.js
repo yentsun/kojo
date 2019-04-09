@@ -12,6 +12,6 @@ module.exports = async function () {
 
     logger.debug(`called`);
     assert(typeof alpha.methodB === 'function');
-    alpha.emit('aCalled', 'boo');
+    kojo.emit('aCalled', 'boo');
     return await bravo.methodA();
 };
