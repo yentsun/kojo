@@ -1,6 +1,6 @@
-[6.0.0]
--------
-- [ ] Move event emitting from services to the root kojo app
+[6.0.0] - 2019-04-09
+--------------------
+- [x] Move event emitting from services to the root kojo app
 
 
 [5.3.0] - 2019-02-10
