@@ -132,7 +132,7 @@ module.exports = async function () {
 };
 ```
 **Important: for method's context to be available, the method must be
-defined via `function() {}`, not arrow `()==>{}`**
+defined via `function() {}`, not arrow `()=>{}`**
 
 Services are also `EventEmitter`s and can publish internal events:
 ```js
