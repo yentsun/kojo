@@ -1,4 +1,4 @@
-[6.2.0] - 2019-05-13
+[6.2.1] - 2019-05-13
 --------------------
 - [x] `kojo.ready()` returns service / subscriber counts
 - [x] Increase code coverage
