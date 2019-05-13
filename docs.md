@@ -128,5 +128,5 @@ Get (previously `set`) value from state.
 **Example**  
 ```js
 const client = await MongoClient.connect(config.mongodb.url);
-kojo.set('mongo', client);
+kojo.get('mongo');
 ```

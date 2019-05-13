@@ -208,7 +208,7 @@ class Kojo extends EventEmitter {
      * @example
      * ```js
      * const client = await MongoClient.connect(config.mongodb.url);
-     * kojo.set('mongo', client);
+     * kojo.get('mongo');
      * ```
      */
     get(key) {
