@@ -32,10 +32,10 @@ class Kojo extends EventEmitter {
     /**
      * Create Kojo instance
      *
-     * @param options {object} - configuration options
+     * @param options {Object} - configuration options
      * @param options.subsDir {string} - subscribers directory (relative to project root)
      * @param options.serviceDir {string} - service directory (relative to project root)
-     * @param options.parentPackage {object} - parent package, Kojo is running from. Needed to just display
+     * @param options.parentPackage {Object} - parent package, Kojo is running from. Needed to just display
      *                                         parent package name version. Default is current project package.json
      * @param options.name {string} - Kojo name (default `工場`)
      * @param options.icon {string} - Kojo icon, usually an emoji (default `☢`)
@@ -68,7 +68,7 @@ class Kojo extends EventEmitter {
         /**
          * Kojo instance unique ID
          *
-         * @type String
+         * @type string
          * @example
          * ```
          * user-service.zM8n6
@@ -79,7 +79,7 @@ class Kojo extends EventEmitter {
         /**
          * Kojo name
          *
-         * @type String
+         * @type string
          * @example
          * ```
          * user-service
@@ -111,7 +111,7 @@ class Kojo extends EventEmitter {
      *
      * @instance
      * @return {Promise}
-     * @fulfil {undefined}
+     * @fulfil {Array} - 'tuple' with services and endpoints count
      * @example
      * ```js
      * const kojo = new Kojo(options);
@@ -144,7 +144,7 @@ class Kojo extends EventEmitter {
             if (error.code === 'ENOENT' && error.path === servicesDir && !kojo._options.serviceDir)
                 process.stdout.write(`    ${icon} skipping services\n`);
             else {
-                process.stdout.write('error\n');
+                process.stderr.write(error.message);
                 throw error;
             }
         }
@@ -167,16 +167,19 @@ class Kojo extends EventEmitter {
                 subsDone.push(subsWrapper(kojo, new Logger({id: loggerId, icon, level: logLevel, tagPieces: [subName], color: 'bold'})));
             });
             await Promise.all(subsDone);
-            process.stdout.write(` done (${Object.keys(kojo._subscribers).length})\n`);
+            process.stdout.write(` done (${kojo._subscribers.length})\n`);
         } catch (error) {
-            if (error.code === 'ENOENT' && error.path === subsDir) {
+            if (error.code === 'ENOENT' && error.path === subsDir && !kojo._options.subsDir) {
                 process.stdout.write(`    ${icon} skipping subscribers\n`);
-            } else
+            } else {
+                process.stderr.write(error.message);
                 throw error;
+            }
         }
 
         process.stdout.write(`    ${icon} kojo "${kojo.name}" ready [${process.env.NODE_ENV}]\n`);
         process.stdout.write('*************************************************************\n');
+        return [ Object.keys(kojo.services).length, kojo._subscribers.length ];
     }
 
     /**
@@ -184,7 +187,7 @@ class Kojo extends EventEmitter {
      * configuration objects, etc. This is also called setting an 'extra'.
      *
      * @instance
-     * @param {String} key - key string
+     * @param {string} key - key string
      * @param {*} value - value of any type
      * @example
      * ```js
@@ -200,8 +203,7 @@ class Kojo extends EventEmitter {
      * Get (previously `set`) value from state.
      *
      * @instance
-     * @param {String=} key - key string (optional). If omitted, returns all state items,
-     *                        which is useful for destructing syntax
+     * @param {string=} key - key string (optional). If omitted, returns state object.
      * @returns {*}
      * @example
      * ```js
@@ -210,8 +212,7 @@ class Kojo extends EventEmitter {
      * ```
      */
     get(key) {
-        // TODO handle missing key
-        return key ? this.state[key]: this.state;
+        return key ? this.state[key] : this.state;
     }
 
 }

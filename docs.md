@@ -6,8 +6,8 @@ API Documentation
     * [Kojo](#exp_module_kojo--Kojo) ⏏
         * [new Kojo(options)](#new_module_kojo--Kojo_new)
         * [.config](#module_kojo--Kojo+config) : <code>Object</code>
-        * [.id](#module_kojo--Kojo+id) : <code>String</code>
-        * [.name](#module_kojo--Kojo+name) : <code>String</code>
+        * [.id](#module_kojo--Kojo+id) : <code>string</code>
+        * [.name](#module_kojo--Kojo+name) : <code>string</code>
         * [.services](#module_kojo--Kojo+services) : <code>Object</code>
         * [.ready()](#module_kojo--Kojo+ready) ⇒ <code>Promise</code>
         * [.set(key, value)](#module_kojo--Kojo+set)
@@ -28,13 +28,13 @@ Create Kojo instance
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | configuration options |
-| options.subsDir | <code>String</code> | subscribers directory (relative to project root) |
-| options.serviceDir | <code>String</code> | service directory (relative to project root) |
+| options.subsDir | <code>string</code> | subscribers directory (relative to project root) |
+| options.serviceDir | <code>string</code> | service directory (relative to project root) |
 | options.parentPackage | <code>Object</code> | parent package, Kojo is running from. Needed to just display                                         parent package name version. Default is current project package.json |
-| options.name | <code>String</code> | Kojo name (default `工場`) |
-| options.icon | <code>String</code> | Kojo icon, usually an emoji (default `☢`) |
-| options.loglevel | <code>Object</code> | the log level (default: `debug`) |
-| options.loggerIdPrefix | <code>Boolean</code> | shall logger use Kojo ID prefix? (default: false) |
+| options.name | <code>string</code> | Kojo name (default `工場`) |
+| options.icon | <code>string</code> | Kojo icon, usually an emoji (default `☢`) |
+| options.logLevel | <code>string</code> | the log level (default: `debug`) |
+| options.loggerIdSuffix | <code>boolean</code> | shall logger use Kojo ID prefix? (default: false) |
 
 **Example**  
 ```js
@@ -51,7 +51,7 @@ Kojo instance configuration
 **Kind**: instance property of [<code>Kojo</code>](#exp_module_kojo--Kojo)  
 <a name="module_kojo--Kojo+id"></a>
 
-#### kojo.id : <code>String</code>
+#### kojo.id : <code>string</code>
 Kojo instance unique ID
 
 **Kind**: instance property of [<code>Kojo</code>](#exp_module_kojo--Kojo)  
@@ -61,7 +61,7 @@ user-service.zM8n6
 ```
 <a name="module_kojo--Kojo+name"></a>
 
-#### kojo.name : <code>String</code>
+#### kojo.name : <code>string</code>
 Kojo name
 
 **Kind**: instance property of [<code>Kojo</code>](#exp_module_kojo--Kojo)  
@@ -90,7 +90,7 @@ subscriber has been loaded. Always `await` for it before using Kojo
 instance.
 
 **Kind**: instance method of [<code>Kojo</code>](#exp_module_kojo--Kojo)  
-**Fulfil**: <code>undefined</code>  
+**Fulfil**: <code>Array</code> - 'tuple' with services and endpoints count  
 **Example**  
 ```js
 const kojo = new Kojo(options);
@@ -106,7 +106,7 @@ configuration objects, etc. This is also called setting an 'extra'.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| key | <code>String</code> | key string |
+| key | <code>string</code> | key string |
 | value | <code>\*</code> | value of any type |
 
 **Example**  
@@ -117,13 +117,13 @@ kojo.set('mongo', client);
 <a name="module_kojo--Kojo+get"></a>
 
 #### kojo.get([key]) ⇒ <code>\*</code>
-Get (previously `set`) value from global context.
+Get (previously `set`) value from state.
 
 **Kind**: instance method of [<code>Kojo</code>](#exp_module_kojo--Kojo)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| [key] | <code>String</code> | key string (optional). If omitted, returns all extras,                        which is useful for destructing syntax |
+| [key] | <code>string</code> | key string (optional). If omitted, returns state object. |
 
 **Example**  
 ```js
