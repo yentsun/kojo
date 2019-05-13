@@ -123,7 +123,7 @@ Get (previously `set`) value from state.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| [key] | <code>string</code> | key string (optional). If omitted, returns all state items,                        which is useful for destructing syntax |
+| [key] | <code>string</code> | key string (optional). If omitted, returns state object. |
 
 **Example**  
 ```js

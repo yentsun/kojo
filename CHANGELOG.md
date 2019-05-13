@@ -1,3 +1,9 @@
+[6.2.0] - 2019-05-13
+--------------------
+- [x] `kojo.ready()` returns service / subscriber counts
+- [x] Increase code coverage
+
+
 [6.1.0] - 2019-05-13
 --------------------
 - [x] Add `warn` logger level

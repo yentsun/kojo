@@ -44,6 +44,7 @@ describe('kojo', () => {
         const {nats, rub} = await kojo.state;
         assert(nats.connection);
         assert.strictEqual(nats.host, 'natsHost');
+        assert.strictEqual(nats.host, kojo.get().nats.host);
         assert.strictEqual(rub, '튎嵸覆');
     });
 
