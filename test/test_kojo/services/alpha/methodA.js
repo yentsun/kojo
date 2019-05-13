@@ -10,7 +10,8 @@ module.exports = async function () {
     logger.debug();
     logger.debug('object test', {key: 'value', obj: {key: 'value'}});
 
-    logger.debug(`called`);
+    logger.debug('called');
+    logger.warn('WARNING!');
     assert(typeof alpha.methodB === 'function');
     kojo.emit('aCalled', 'boo');
     return await bravo.methodA();
