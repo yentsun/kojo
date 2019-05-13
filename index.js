@@ -111,7 +111,7 @@ class Kojo extends EventEmitter {
      *
      * @instance
      * @return {Promise}
-     * @fulfil {undefined}
+     * @fulfil {Array} - 'tuple' with services and endpoints count
      * @example
      * ```js
      * const kojo = new Kojo(options);
@@ -144,7 +144,7 @@ class Kojo extends EventEmitter {
             if (error.code === 'ENOENT' && error.path === servicesDir && !kojo._options.serviceDir)
                 process.stdout.write(`    ${icon} skipping services\n`);
             else {
-                process.stdout.write('error\n');
+                process.stderr.write(error.message);
                 throw error;
             }
         }
@@ -167,16 +167,19 @@ class Kojo extends EventEmitter {
                 subsDone.push(subsWrapper(kojo, new Logger({id: loggerId, icon, level: logLevel, tagPieces: [subName], color: 'bold'})));
             });
             await Promise.all(subsDone);
-            process.stdout.write(` done (${Object.keys(kojo._subscribers).length})\n`);
+            process.stdout.write(` done (${kojo._subscribers.length})\n`);
         } catch (error) {
-            if (error.code === 'ENOENT' && error.path === subsDir) {
+            if (error.code === 'ENOENT' && error.path === subsDir && !kojo._options.subsDir) {
                 process.stdout.write(`    ${icon} skipping subscribers\n`);
-            } else
+            } else {
+                process.stderr.write(error.message);
                 throw error;
+            }
         }
 
         process.stdout.write(`    ${icon} kojo "${kojo.name}" ready [${process.env.NODE_ENV}]\n`);
         process.stdout.write('*************************************************************\n');
+        return [ Object.keys(kojo.services).length, kojo._subscribers.length ];
     }
 
     /**
