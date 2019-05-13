@@ -1,3 +1,8 @@
+[6.1.0] - 2019-05-13
+--------------------
+- [x] Add `warn` logger level
+
+
 [6.0.0] - 2019-04-09
 --------------------
 - [x] Move event emitting from services to the root kojo app
