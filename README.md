@@ -29,7 +29,7 @@ Installation
 Usage
 -----
  
-Create a module with a method (`services/user/create.js`):
+Create a service with a method (`services/user/create.js`):
 
  ```js
 module.exports = async function (userData) {
@@ -53,7 +53,7 @@ Create a subscriber (`subscribers/user.create.js`):
  ```js
 module.exports = (kojo, logger) => {
 
-    const {user} = kojo.services;  // we defined `user` module above
+    const {user} = kojo.services;  // we defined `user` service above
     const nats = kojo.get('nats'); // as with pg connection above we have nats connection too
 
     nats.subscribe('user.create', async (userData) => {
