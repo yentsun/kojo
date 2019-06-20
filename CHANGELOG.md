@@ -1,3 +1,8 @@
+[7.0.0]
+-------
+- [x] Remove `jsdoc-to-markdown` dev dependency (#20)
+
+
 [6.2.1] - 2019-05-13
 --------------------
 - [x] `kojo.ready()` returns service / subscriber counts
