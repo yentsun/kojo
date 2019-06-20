@@ -1,6 +1,6 @@
 module.exports = function (argumentA, argumentB) {
 
-    const {logger} = this;
+    const [kojo, logger] = this;
     logger.debug('called');
     return argumentA + argumentB;
 };

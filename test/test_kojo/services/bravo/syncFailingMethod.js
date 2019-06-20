@@ -1,6 +1,6 @@
 module.exports = function () {
 
-    const {logger} = this;
+    const [kojo, logger] = this;
     logger.debug('expecting failure');
     throw new Error('Expected failure occurred');
 };
