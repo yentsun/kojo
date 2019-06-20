@@ -3,7 +3,7 @@ const assert = require('assert');
 
 module.exports = async function () {
 
-    const {kojo, logger} = this;
+    const [kojo, logger] = this;
     const {alpha, bravo} = kojo.services;
 
     // some logger tests
