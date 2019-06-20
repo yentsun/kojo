@@ -97,7 +97,7 @@ return main();
 Services and their methods
 --------------------------
 
-*Service* is just a directory with files that represent *methods*. For
+*Service* is just a directory with files which represent *methods*. For
 example:
 
 ```
@@ -119,7 +119,7 @@ These methods are available from anywhere via kojo instance:
 - `kojo.services.profile.update()`
 - etc
 
-A method file must export an `async` function that (usually) returns a value.
+A method file must export an `async` function which (usually) returns a value.
 It will have kojo instance and [logger](#logger) in its context:
 ```js
 module.exports = async function () {
@@ -147,7 +147,7 @@ kojo.on('profile.created', (newProfile) => {
 
 ```
 
-Thus, you can create 'internal' subscribers that listen to events.
+Thus, you can create 'internal' subscribers which listen to events.
 
 Note: *Methods named `test` are ignored and not registered. These are
 reserved for unit tests.*
@@ -165,8 +165,8 @@ Subscribers
 │   └── ...
 ```
 
-*Subscriber* exports an async function that is **called once** during kojo
-initialization and is not avalable otherwise. It is supposed to have a
+*Subscriber* exports an async function which is **called once** during kojo
+initialization and is not available otherwise. It is supposed to have a
 single subscription to a pub/sub transport subject or services's internal
 event, or http route and is recommended to be named accordingly. For
 example, `subscribers/internal.user.registered.js`:
