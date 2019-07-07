@@ -34,7 +34,7 @@ Create a service with a method (`services/user/create.js`):
  ```js
 module.exports = async function (userData) {
     
-    const {kojo, logger} = this;  // kojo instance and the logger
+    const [kojo, logger] = this;  // kojo instance and the logger
 
     logger.debug('creating', userData);  // logger will automatically add module and method name
     const pool = kojo.get('pg');  // get previously set pg connection
@@ -124,7 +124,7 @@ It will have kojo instance and [logger](#logger) in its context:
 ```js
 module.exports = async function () {
 
-    const {kojo, logger} = this;  // instance and logger in context
+    const [kojo, logger] = this;  // instance and logger passed in context
     ...
     const {profile} = kojo.services;
     logger.debug('creating profile', userData);
@@ -137,7 +137,7 @@ defined via `function() {}`, not arrow `()=>{}`**
 Kojo is also an `EventEmitter` and can publish internal events:
 ```js
 ...
-const {kojo, logger} = this;
+const [kojo, logger] = this;
 ...
 kojo.emit('profile.created', newProfile);
 ...
