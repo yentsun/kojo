@@ -1,5 +1,11 @@
-[7.0.0]
+[7.0.1]
 -------
+- [x] Update dependencies
+- [x] Make tests win compatible
+
+
+[7.0.0] - 2019-06-20
+--------------------
 - [x] Remove `jsdoc-to-markdown` dev dependency (#20)
 - [x] Substitute 'Object' context with array one (#19)
 
