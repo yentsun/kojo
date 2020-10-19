@@ -101,7 +101,8 @@ describe('broken endpoints kojo', () => {
             assert(!res, 'Expected errors, but got none');
         } catch (error) {
             assert(error.message.includes('ENOENT: no such file or directory, scandir'));
-            assert(error.message.includes('broken_endpoints_kojo/endpoints'));
+            assert(error.message.includes('broken_endpoints_kojo'));
+            assert(error.message.includes('endpoints'));
         }
     })
 
