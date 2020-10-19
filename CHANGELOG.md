@@ -1,5 +1,5 @@
-[7.0.1]
--------
+[7.0.1] - 2020-10-19
+--------------------
 - [x] Update dependencies
 - [x] Make tests win compatible
 
