@@ -1,6 +1,6 @@
-module.exports = async function () {
+export default async function () {
 
-    const [kojo, logger] = this;
+    const [ , logger ] = this;
     logger.debug(`called`);
     return 'bravo';
 };

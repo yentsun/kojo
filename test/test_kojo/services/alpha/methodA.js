@@ -1,10 +1,10 @@
-const assert = require('assert');
+import assert from 'assert';
 
 
-module.exports = async function () {
+export default async function MethodA() {
 
-    const [kojo, logger] = this;
-    const {alpha, bravo} = kojo.services;
+    const [ kojo, logger ] = this;
+    const { alpha, bravo } = kojo.services;
 
     // some logger tests
     logger.debug();

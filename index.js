@@ -2,16 +2,16 @@
  * @module kojo
  */
 
-const path = require('path');
-const fs = require('fs');
-const {promisify} = require('util');
-const {EventEmitter} = require('events');
-const readDir = promisify(fs.readdir);
-const TrID = require('trid');
-const Service = require('./lib/Service');
-const Logger = require('./lib/Logger');
-const {getParentPackageInfo} = require('./lib/util');
-const kojoPackage = require('./package');
+import path from 'path';
+import url from 'url';
+import fs from 'fs'; const readDir = promisify(fs.readdir);
+import { promisify } from 'util';
+import { EventEmitter } from 'events';
+import TrID from 'trid';
+import Service from './lib/Service.js';
+import Logger from'./lib/Logger.js';
+import  { getParentPackageInfo } from './lib/util.js';
+import kojoPackage from './package.json';
 
 
 /**
@@ -49,7 +49,7 @@ class Kojo extends EventEmitter {
         const defaults = {
             subsDir: 'subscribers',
             serviceDir: 'services',
-            parentPackage: getParentPackageInfo(),
+            parentPackage: null,
             name: '工場',
             icon: '☢',
             logLevel: 'debug',
@@ -62,7 +62,7 @@ class Kojo extends EventEmitter {
          * @type Object
          */
         this.config = Object.assign(defaults, this._options);
-        const {name} = this.config;
+        const { name } = this.config;
         const id = new TrID();
 
         /**
@@ -121,7 +121,11 @@ class Kojo extends EventEmitter {
     async ready() {
 
         const kojo = this;
-        const {icon, parentPackage, logLevel} = kojo.config;
+
+        if (! kojo.config.parentPackage)
+            kojo.config.parentPackage = (await getParentPackageInfo()).default;
+
+        const { icon, logLevel, parentPackage } = kojo.config;
 
         process.stdout.write('\n*************************************************************\n');
         process.stdout.write(`  ${icon} ${kojo.id}  |  ${parentPackage.name}@${parentPackage.version}  |  ${kojoPackage.name}@${kojoPackage.version}\n`);
@@ -133,12 +137,18 @@ class Kojo extends EventEmitter {
         try {
             const serviceDirs = await readDir(servicesDir);
             process.stdout.write(`    ${icon} loading services...`);
-            serviceDirs.forEach((srvDir) => {
+
+            for (const srvDir of serviceDirs) {
                 const servicePath = path.join(servicesDir, srvDir);
-                if (!fs.lstatSync(servicePath).isDirectory()) return;
+
+                if (! fs.lstatSync(servicePath).isDirectory())
+                    continue;
+
                 const serviceName = path.basename(servicePath);
-                kojo.services[serviceName] = new Service(serviceName, servicePath, kojo);
-            });
+                const service = new Service(serviceName, servicePath, kojo);
+                kojo.services[serviceName] = await service.ready();
+            }
+
             process.stdout.write(` done (${Object.keys(kojo.services).length})\n`);
         } catch (error) {
             if (error.code === 'ENOENT' && error.path === servicesDir && !kojo._options.serviceDir)
@@ -153,20 +163,24 @@ class Kojo extends EventEmitter {
 
         const subsDir = path.join(process.cwd(), kojo.config.subsDir);
         try {
-            const subsDone = [];
             const subscriberFiles = await readDir(subsDir);
             const subsAlias = path.basename(kojo.config.subsDir);
             process.stdout.write(`    ${icon} loading ${subsAlias}...`);
-            subscriberFiles.forEach(async (subscriberFile) => {
-                const subName = path.basename(subscriberFile, '.js');
-                const requirePath = path.join(subsDir, subscriberFile);
-                kojo._subscribers.push(subName);
-                let subsWrapper = require(requirePath);
 
-                const loggerId = kojo.config.loggerIdSuffix ? [kojo.name, kojo.id].join('.') : kojo.name;
-                subsDone.push(subsWrapper(kojo, new Logger({id: loggerId, icon, level: logLevel, tagPieces: [subName], color: 'bold'})));
-            });
-            await Promise.all(subsDone);
+            await Promise.all(subscriberFiles.map(async (subscriberFile) => {
+                    const subName = path.basename(subscriberFile, '.js');
+                    const importPath = path.join(subsDir, subscriberFile);
+                    kojo._subscribers.push(subName);
+                    const subsWrapper = await import(url.pathToFileURL(importPath));
+                    const loggerId = kojo.config.loggerIdSuffix ? [ kojo.name, kojo.id ].join('.') : kojo.name;
+                    return subsWrapper.default(kojo, new Logger({
+                        id: loggerId, icon,
+                        level: logLevel,
+                        tagPieces: [ subName ],
+                        color: 'bold' }))
+                }
+            ));
+
             process.stdout.write(` done (${kojo._subscribers.length})\n`);
         } catch (error) {
             if (error.code === 'ENOENT' && error.path === subsDir && !kojo._options.subsDir) {
@@ -217,4 +231,4 @@ class Kojo extends EventEmitter {
 
 }
 
-module.exports = Kojo;
+export default Kojo;
