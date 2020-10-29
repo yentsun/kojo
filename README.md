@@ -13,7 +13,7 @@ services and methods which are just plain functions. *Subscribers* susbscribe to
 pub/sub (or request/response, or a schedule) transport of your choice and call services
 while *services* perform various tasks via their *methods*.
 
-![example workflow name](https://github.com/yentsun/kojo/workflows/Node.js%20CI/badge.svg?branch=master)
+![example workflow name](https://github.com/yentsun/kojo/workflows/Tests/badge.svg?branch=master)
 [![Build Status](https://travis-ci.org/yentsun/kojo.svg?branch=master)](https://travis-ci.org/yentsun/kojo)
 [![Coverage Status](https://coveralls.io/repos/github/yentsun/kojo/badge.svg?branch=master)](https://coveralls.io/github/yentsun/kojo?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/yentsun/kojo/badge.svg?targetFile=package.json)](https://snyk.io/test/github/yentsun/kojo?targetFile=package.json)
