@@ -28,4 +28,3 @@ jobs:
       - run: ./node_modules/.bin/c8 npm test && ./node_modules/.bin/c8 report --reporter=text-lcov | ./node_modules/.bin/coveralls
         env:
           COVERALLS_REPO_TOKEN: FZHItqWjxePhPWvhIcwpuAuUNPVfLRBbW
-
