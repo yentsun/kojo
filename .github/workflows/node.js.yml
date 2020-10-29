@@ -26,6 +26,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
       - run: ./node_modules/.bin/nyc npm test && ./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls
+        env:
+          CI: true
+          NODE_ENV: test
 
       - name: Coveralls GitHub Action
         uses: coverallsapp/github-action@v1.1.2
