@@ -9,4 +9,4 @@ before_install:
 
 install: npm ci
 
-script: nyc npm test && nyc report --reporter=text-lcov | coveralls
+script: nyc npm test --experimental-json-modules && nyc report --reporter=text-lcov | coveralls
