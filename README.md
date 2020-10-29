@@ -32,9 +32,9 @@ Usage
 Create a service with a method (`services/user/create.js`):
 
  ```js
-module.exports = async function (userData) {
+export default async function (userData) {
     
-    const [kojo, logger] = this;  // kojo instance and the logger
+    const [ kojo, logger ] = this;  // kojo instance and the logger
 
     logger.debug('creating', userData);  // logger will automatically add module and method name
     const pool = kojo.get('pg');  // get previously set pg connection
@@ -51,7 +51,7 @@ module.exports = async function (userData) {
 Create a subscriber (`subscribers/user.create.js`):
 
  ```js
-module.exports = (kojo, logger) => {
+export default (kojo, logger) => {
 
     const {user} = kojo.services;  // we defined `user` service above
     const nats = kojo.get('nats'); // as with pg connection above we have nats connection too
@@ -122,13 +122,13 @@ These methods are available from anywhere via kojo instance:
 A method file must export an `async` function which (usually) returns a value.
 It will have kojo instance and [logger](#logger) in its context:
 ```js
-module.exports = async function () {
+export default async function () {
 
-    const [kojo, logger] = this;  // instance and logger passed in context
+    const [ kojo, logger ] = this;  // instance and logger passed in context
     ...
-    const {profile} = kojo.services;
+    const { profile } = kojo.services;
     logger.debug('creating profile', userData);
-    return await profile.create(userData);
+    return profile.create(userData);
 };
 ```
 **Important: for method's context to be available, the method must be
@@ -137,7 +137,7 @@ defined via `function() {}`, not arrow `()=>{}`**
 Kojo is also an `EventEmitter` and can publish internal events:
 ```js
 ...
-const [kojo, logger] = this;
+const [ kojo, logger ] = this;
 ...
 kojo.emit('profile.created', newProfile);
 ...
@@ -171,7 +171,7 @@ single subscription to a pub/sub transport subject or services's internal
 event, or http route and is recommended to be named accordingly. For
 example, `subscribers/internal.user.registered.js`:
 ```js
-module.exports = async (kojo, logger) => {
+export default async (kojo, logger) => {
 
     const {user} = kojo.services;
     const nats = kojo.get('nats');
@@ -193,11 +193,11 @@ Kojo uses a custom mechanism for 'smart' logging from subscribers and services.
 'Smart' means that if you log from method `user.register`, log entries
 will include "user.register":
 ```js
-logger.debug('registering', userData);
+logger.debug(userData);
 ```
 
 ```
-☢ test.QOmup DEBUG [user.register] registering {...}
+☢ test.QOmup DEBUG [user.register] {...user data}
 ```
 
 You can always use your own logger, provided you register it as an extra,

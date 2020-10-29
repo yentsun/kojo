@@ -1,6 +1,7 @@
 [8.0.0]
 -------
 - [x] Move to ESM (#27)
+- [x] Rewrite docs for ESM (#27)
 
 
 [7.0.1] - 2020-10-19
