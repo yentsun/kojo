@@ -1,12 +1,6 @@
-dist: xenial
 language: node_js
 
 node_js:
   - lts/*
-
-before_install:
-  - npm i -g npm@6.0.0
-
-install: npm ci
 
 script: nyc npm test --experimental-json-modules && nyc report --reporter=text-lcov | coveralls
