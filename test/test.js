@@ -1,6 +1,6 @@
-const assert = require('assert');
-const sinon = require('sinon');
-const Kojo = require('../index');
+import assert from 'assert';
+import sinon from 'sinon';
+import Kojo from'../index.js';
 
 
 describe('kojo', () => {
@@ -18,7 +18,7 @@ describe('kojo', () => {
 
     before(async function() {
         kojo = new Kojo(options);
-        kojo.set('nats', {host: 'natsHost', connection: true});
+        kojo.set('nats', { host: 'natsHost', connection: true });
         kojo.set('rub', '튎嵸覆');
         await kojo.ready();
     });
@@ -29,7 +29,7 @@ describe('kojo', () => {
         assert.strictEqual(result, 'bravo');
     });
 
-    it('lets services to emit events', (done) => {
+    it('allows a service to emit events', (done) => {
         assert(methodAcalledSpy.calledOnce);
         done();
     });
@@ -64,7 +64,7 @@ describe('kojo', () => {
 
     it('checks exception logging (with 2 params)', async () => {
         try {
-            await kojo.module('charlie').methodA();
+            await kojo.services.charlie.methodA();
         } catch (error) {
             // Just to mark test passed. You should see the error logged
         }
@@ -98,7 +98,7 @@ describe('broken endpoints kojo', () => {
         const kojo = new Kojo(options);
         try {
             const res = await kojo.ready();
-            assert(!res, 'Expected errors, but got none');
+            assert(! res, 'Expected errors, but got none');
         } catch (error) {
             assert(error.message.includes('ENOENT: no such file or directory, scandir'));
             assert(error.message.includes('broken_endpoints_kojo'));

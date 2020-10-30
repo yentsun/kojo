@@ -1,4 +1,4 @@
-module.exports = async function () {
+export default async function () {
 
     throw new Error('Synthetic method error');
 

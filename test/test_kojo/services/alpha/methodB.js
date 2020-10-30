@@ -1,6 +1,6 @@
-module.exports = async function () {
+export default async function () {
 
-    const [kojo, logger] = this;
+    const [ kojo, logger ] = this;
 
     const nats = kojo.get('nats');
     logger.debug(`called`);

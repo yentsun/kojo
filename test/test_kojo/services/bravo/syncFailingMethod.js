@@ -1,6 +1,6 @@
-module.exports = function () {
+export default function () {
 
-    const [kojo, logger] = this;
+    const [ , logger ] = this;
     logger.debug('expecting failure');
     throw new Error('Expected failure occurred');
 };

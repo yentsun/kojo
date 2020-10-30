@@ -1,6 +1,6 @@
-module.exports = function (argumentA, argumentB) {
+export default function (argumentA, argumentB) {
 
-    const [kojo, logger] = this;
+    const [ , logger ] = this;
     logger.debug('called');
     return argumentA + argumentB;
 };

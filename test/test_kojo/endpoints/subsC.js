@@ -1,8 +1,10 @@
-const assert = require('assert');
-const sleep = require('util').promisify(setTimeout);
+import assert from 'assert';
+import { promisify } from 'util';
 
 
-module.exports = async (kojo, logger) => {
+const sleep = promisify(setTimeout);
+
+export default async (kojo, logger) => {
 
     const {alpha, bravo} = kojo.services;
     assert(alpha.methodA);
