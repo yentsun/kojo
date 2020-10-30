@@ -235,6 +235,19 @@ Test
 npm test
 ```
 
+Troubleshooting
+---------------
+
+If you see this error message:
+```
+TypeError [ERR_UNKNOWN_FILE_EXTENSION]: Unknown file extension ".json" for /kojo/package.json
+```
+you need to launch your service with Node's `--experimental-json-modules` option:
+
+```
+node service.js --experimental-json-modules
+```
+
 
 [Seneca]: http://senecajs.org/
 [docs]: docs.md
