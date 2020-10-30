@@ -29,6 +29,8 @@ Installation
 
 Usage
 -----
+
+**NOTE: Starting from v8.0.0 this package moved to native ESM modules.** 
  
 Create a service with a method (`services/user/create.js`):
 
