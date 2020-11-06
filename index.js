@@ -88,19 +88,6 @@ class Kojo extends EventEmitter {
         this.name = name;
 
         this.state = {};
-        /**
-         * Loaded services found in the services directory;
-         * if a service has methods, they will be available through dot notation.
-         *
-         * @type Object
-         * @example
-         * ```js
-         * const {user, profile} = kojo.services;
-         * user.create({...});
-         * profile.update({...})
-         * ```
-         */
-        this.services = {};
         this._subscribers = [];
     }
 
@@ -134,6 +121,7 @@ class Kojo extends EventEmitter {
         // SERVICES
 
         const servicesDir = path.join(process.cwd(), kojo.config.serviceDir);
+        const servicesAlias = path.basename(kojo.config.serviceDir);
         try {
             const serviceDirs = await readDir(servicesDir);
             process.stdout.write(`    ${icon} loading services...`);
@@ -146,10 +134,10 @@ class Kojo extends EventEmitter {
 
                 const serviceName = path.basename(servicePath);
                 const service = new Service(serviceName, servicePath, kojo);
-                kojo.services[serviceName] = await service.ready();
+                kojo[servicesAlias][serviceName] = await service.ready();
             }
 
-            process.stdout.write(` done (${Object.keys(kojo.services).length})\n`);
+            process.stdout.write(` done (${Object.keys(kojo[servicesAlias]).length})\n`);
         } catch (error) {
             if (error.code === 'ENOENT' && error.path === servicesDir && !kojo._options.serviceDir)
                 process.stdout.write(`    ${icon} skipping services\n`);
@@ -193,7 +181,7 @@ class Kojo extends EventEmitter {
 
         process.stdout.write(`    ${icon} kojo "${kojo.name}" ready [${process.env.NODE_ENV}]\n`);
         process.stdout.write('*************************************************************\n');
-        return [ Object.keys(kojo.services).length, kojo._subscribers.length ];
+        return [ Object.keys(kojo[servicesAlias]).length, kojo._subscribers.length ];
     }
 
     /**
