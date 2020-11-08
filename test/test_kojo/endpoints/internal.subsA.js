@@ -6,7 +6,7 @@ const sleep = promisify(setTimeout);
 
 export default async (kojo, logger) => {
 
-    const { alpha, bravo } = kojo.services;
+    const { alpha, bravo } = kojo.methods;
     assert(alpha.methodA);
     assert(bravo.methodA);
     assert(typeof logger.debug === 'function');
