@@ -122,9 +122,11 @@ class Kojo extends EventEmitter {
 
         const servicesDir = path.join(process.cwd(), kojo.config.serviceDir);
         const servicesAlias = path.basename(kojo.config.serviceDir);
+        kojo[servicesAlias] = {};
+
         try {
             const serviceDirs = await readDir(servicesDir);
-            process.stdout.write(`    ${icon} loading services...`);
+            process.stdout.write(`    ${icon} loading ${servicesAlias}...`);
 
             for (const srvDir of serviceDirs) {
                 const servicePath = path.join(servicesDir, srvDir);
@@ -140,7 +142,7 @@ class Kojo extends EventEmitter {
             process.stdout.write(` done (${Object.keys(kojo[servicesAlias]).length})\n`);
         } catch (error) {
             if (error.code === 'ENOENT' && error.path === servicesDir && !kojo._options.serviceDir)
-                process.stdout.write(`    ${icon} skipping services\n`);
+                process.stdout.write(`    ${icon} skipping ${servicesAlias}\n`);
             else {
                 process.stderr.write(error.message);
                 throw error;

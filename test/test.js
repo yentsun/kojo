@@ -132,7 +132,7 @@ describe('nameless kojo', () => {
 
     const options = {
         subsDir: './test/test_kojo/endpoints',
-        serviceDir: './test/test_kojo/services'
+        serviceDir: './test/test_kojo/methods'
     };
 
     it('is assigned a default name', async () => {
