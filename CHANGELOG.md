@@ -1,5 +1,5 @@
-[8.1.0]
--------
+[8.1.0] - 2020-11-08
+--------------------
 - [x] Make context have `services` renamed to what `options.serviceDir` is (#29)
 
 
