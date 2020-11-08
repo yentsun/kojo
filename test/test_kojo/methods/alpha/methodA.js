@@ -4,7 +4,7 @@ import assert from 'assert';
 export default async function MethodA() {
 
     const [ kojo, logger ] = this;
-    const { alpha, bravo } = kojo.services;
+    const { alpha, bravo } = kojo.methods;
 
     // some logger tests
     logger.debug();

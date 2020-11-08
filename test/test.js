@@ -3,13 +3,13 @@ import sinon from 'sinon';
 import Kojo from'../index.js';
 
 
-describe('kojo', () => {
+describe('a regular kojo', () => {
 
     const methodAcalledSpy = sinon.spy();
     const options = {
         subsDir: './test/test_kojo/endpoints',
-        serviceDir: './test/test_kojo/services',
-        name: 'test',
+        serviceDir: './test/test_kojo/methods',
+        name: 'regular',
         icon: '🚩',
         logLevel: 'debug',
         loggerIdSuffix: true
@@ -25,7 +25,7 @@ describe('kojo', () => {
 
     it('loads services available to each other', async () => {
         kojo.on('aCalled', methodAcalledSpy);
-        const result = await kojo.services.alpha.methodA([]);
+        const result = await kojo.methods.alpha.methodA([]);
         assert.strictEqual(result, 'bravo');
     });
 
@@ -35,7 +35,7 @@ describe('kojo', () => {
     });
 
     it('loads config and extras', async () => {
-        const nats = await kojo.services.alpha.methodB();
+        const nats = await kojo.methods.alpha.methodB();
         assert(nats.connection);
         assert.strictEqual(nats.host, 'natsHost');
     });
@@ -50,13 +50,13 @@ describe('kojo', () => {
 
     it('checks whether kojo accessible inside methods (with 2 params)', async () => {
         kojo.set('variable', 12);
-        const result = await kojo.services.charlie.methodA(3);
+        const result = await kojo.methods.charlie.methodA(3);
         assert.strictEqual(result, 36);
     });
 
     it('has promise rejected if module throws', async () => {
         try {
-            await kojo.services.alpha.methodZ();
+            await kojo.methods.alpha.methodZ();
         } catch (error) {
             assert.strictEqual(error.message, 'Synthetic method error');
         }
@@ -64,20 +64,20 @@ describe('kojo', () => {
 
     it('checks exception logging (with 2 params)', async () => {
         try {
-            await kojo.services.charlie.methodA();
+            await kojo.methods.charlie.methodA();
         } catch (error) {
             // Just to mark test passed. You should see the error logged
         }
     });
 
     it('allows a method to be a sync function', (done) => {
-        assert.strictEqual(kojo.services.bravo.syncMethod('Im ', 'sync'), 'Im sync');
+        assert.strictEqual(kojo.methods.bravo.syncMethod('Im ', 'sync'), 'Im sync');
         done();
     });
 
     it('handles errors from sync method', (done) => {
         try {
-            kojo.services.bravo.syncFailingMethod();
+            kojo.methods.bravo.syncFailingMethod();
         } catch (error) {
             assert.strictEqual(error.message, 'Expected failure occurred');
             done();
@@ -132,7 +132,7 @@ describe('nameless kojo', () => {
 
     const options = {
         subsDir: './test/test_kojo/endpoints',
-        serviceDir: './test/test_kojo/services'
+        serviceDir: './test/test_kojo/methods'
     };
 
     it('is assigned a default name', async () => {
