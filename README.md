@@ -70,7 +70,7 @@ Add connections, initialize kojo:
 
  ```js
  ...
-const Kojo = require('kojo');
+import Kojo from 'kojo';
 
 
 async function main() {
