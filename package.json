@@ -1,6 +1,6 @@
 {
   "name": "kojo",
-  "version": "8.1.0",
+  "version": "8.1.1",
   "description": "An event-driven microservice framework. Kōjō (工場) means 'plant' in Japanese.",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,7 @@
     "framework",
     "microframework"
   ],
-  "author": "Maxim Korinets <mkorinets@gmail.com> (http://korinets.name/)",
+  "author": "Maxim Korinets <mkorinets@gmail.com> (https://korinets.name/)",
   "contributors": [
     "Alexander @trueshura (https://github.com/trueshura)"
   ],
@@ -34,7 +34,7 @@
   },
   "engine-strict": true,
   "engines": {
-    "node": ">=14.15.0"
+    "node": ">=14.17.6"
   },
   "devDependencies": {
     "c8": "^7.3.5",
