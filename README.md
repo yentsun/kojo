@@ -4,7 +4,7 @@
 An event-driven microservice framework. Kōjō (工場) means 'factory' in
 Japanese.
 
-The idea of this framework emerged after couple of years of using
+The idea of this framework emerged after a couple of years of using
 [Seneca], which in turn is a great tool for building microservices but probably wants to be
 too abstract.
 
@@ -37,14 +37,16 @@ Create a service with a method (`services/user/create.js`):
 export default async function (userData) {
     
     const [ kojo, logger ] = this;  // kojo instance and the logger
+    const { pg: pool } = kojo.state;  // get previously set pg connection
 
     logger.debug('creating', userData);  // logger will automatically add module and method name
-    const pool = kojo.get('pg');  // get previously set pg connection
     const query = `INSERT INTO ... RETURNING *`;
     const result = await pool.query(query);
     const newRecord = result ? result.rows[0] : null;
+    
     if (newRecord)
         logger.info('created', newRecord);
+    
     return newRecord;
 }
 ```
@@ -55,12 +57,15 @@ Create a subscriber (`subscribers/user.create.js`):
  ```js
 export default (kojo, logger) => {
 
-    const {user} = kojo.services;  // we defined `user` service above
-    const nats = kojo.get('nats'); // as with pg connection above we have nats connection too
+    const { user } = kojo.services;  // we defined `user` service above
+    const  { nats } = kojo.state; // as with pg connection above we have nats connection too
 
     nats.subscribe('user.create', async (userData) => {
+        
         const newUser = await user.create(userData);
-        if (newUser) nats.publish('user.created', newUser);
+        
+        if (newUser) 
+            nats.publish('user.created', newUser);
     });
 }
 ```
@@ -75,7 +80,7 @@ import Kojo from 'kojo';
 
 async function main() {
 
-    const kojo = new Kojo({name: 'users'});
+    const kojo = new Kojo({ name: 'users' });
 
     const pool = new pg.Pool({
        user: 'pg_user',
@@ -129,6 +134,7 @@ export default async function () {
     const [ kojo, logger ] = this;  // instance and logger passed in context
     ...
     const { profile } = kojo.services;
+    
     logger.debug('creating profile', userData);
     return profile.create(userData);
 };
@@ -175,7 +181,8 @@ example, `subscribers/internal.user.registered.js`:
 ```js
 export default async (kojo, logger) => {
 
-    const {user} = kojo.services;
+    const { user } = kojo.services;
+    
     const nats = kojo.get('nats');
     user.on('registered', (newUser) => {
         logger.debug('publishing notification');
