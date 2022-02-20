@@ -11,7 +11,7 @@ import TrID from 'trid';
 import Service from './lib/Service.js';
 import Logger from'./lib/Logger.js';
 import  { getParentPackageInfo } from './lib/util.js';
-import kojoPackage from './package.json';
+import kojoPackage from './package.json' assert { type: 'json' };
 
 
 /**
