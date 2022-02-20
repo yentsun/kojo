@@ -1,3 +1,8 @@
+[8.2.0] - 2022-02-20
+--------------------
+- [x] Add import assertion types to fit Node `v16.14`
+
+
 [8.1.1] - 2021-12-16
 --------------------
 - [x] Update dependencies
