@@ -1,3 +1,8 @@
+[8.2.1] - 2022-02-20
+--------------------
+- [x] Update Node engine version @ `.github`
+
+
 [8.2.0] - 2022-02-20
 --------------------
 - [x] Add import assertion types to fit Node `v16.14`
