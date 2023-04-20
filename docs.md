@@ -25,16 +25,18 @@ The Kojo class
 Create Kojo instance
 
 
-| Param | Type | Description |
-| --- | --- | --- |
-| options | <code>Object</code> | configuration options |
-| options.subsDir | <code>string</code> | subscribers directory (relative to project root) |
-| options.serviceDir | <code>string</code> | service directory (relative to project root) |
-| options.parentPackage | <code>Object</code> | parent package, Kojo is running from. Needed to just display                                         parent package name version. Default is current project package.json |
-| options.name | <code>string</code> | Kojo name (default `工場`) |
-| options.icon | <code>string</code> | Kojo icon, usually an emoji (default `☢`) |
-| options.logLevel | <code>string</code> | the log level (default: `debug`) |
-| options.loggerIdSuffix | <code>boolean</code> | shall logger use Kojo ID prefix? (default: false) |
+| Param                  | Type                 | Description                                                             |
+|------------------------|----------------------|-------------------------------------------------------------------------|
+| options                | <code>Object</code>  | configuration options                                                   |
+| options.subsDir        | <code>string</code>  | subscribers directory (relative to project root)                        |
+| options.serviceDir     | <code>string</code>  | service directory (relative to project root)                            |
+| options.parentPackage  | <code>Object</code>  | parent package Kojo is running from. Needed to just display             |      
+|                        |                      | parent package name version. Default is current project of package.json |
+|                        |                      |                                                                         |
+| options.name           | <code>string</code>  | Kojo name (default `工場`)                                                |
+| options.icon           | <code>string</code>  | Kojo icon, usually an emoji (default `☢`)                               |
+| options.logLevel       | <code>string</code>  | the log level (default: `debug`)                                        |
+| options.loggerIdSuffix | <code>boolean</code> | shall logger use Kojo ID prefix? (default: false)                       |
 
 **Example**  
 ```js
@@ -78,7 +80,7 @@ if a service has methods, they will be available through dot notation.
 **Kind**: instance property of [<code>Kojo</code>](#exp_module_kojo--Kojo)  
 **Example**  
 ```js
-const {user, profile} = kojo.services;
+const { user, profile } = kojo.services;
 user.create({...});
 profile.update({...})
 ```
@@ -104,10 +106,10 @@ configuration objects, etc. This is also called setting an 'extra'.
 
 **Kind**: instance method of [<code>Kojo</code>](#exp_module_kojo--Kojo)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| key | <code>string</code> | key string |
-| value | <code>\*</code> | value of any type |
+| Param | Type                | Description       |
+|-------|---------------------|-------------------|
+| key   | <code>string</code> | key string        |
+| value | <code>\*</code>     | value of any type |
 
 **Example**  
 ```js
@@ -121,8 +123,8 @@ Get (previously `set`) value from state.
 
 **Kind**: instance method of [<code>Kojo</code>](#exp_module_kojo--Kojo)  
 
-| Param | Type | Description |
-| --- | --- | --- |
+| Param | Type                | Description                                              |
+|-------|---------------------|----------------------------------------------------------|
 | [key] | <code>string</code> | key string (optional). If omitted, returns state object. |
 
 **Example**  

@@ -1,3 +1,8 @@
+[8.2.2]
+-------
+- [x] Update dependencies
+
+
 [8.2.1] - 2022-02-20
 --------------------
 - [x] Update Node engine version @ `.github`

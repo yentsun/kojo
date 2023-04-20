@@ -18,7 +18,7 @@
     "framework",
     "microframework"
   ],
-  "author": "Maxim Korinets <mkorinets@gmail.com> (https://korinets.name/)",
+  "author": "Maksim Korinets <mkorinets@gmail.com>",
   "contributors": [
     "Alexander @trueshura (https://github.com/trueshura)"
   ],
@@ -30,16 +30,16 @@
   "homepage": "https://github.com/yentsun/kojo",
   "dependencies": {
     "chalk": "^2.4.2",
-    "trid": "^0.1.1"
+    "trid": "^0.1.2"
   },
   "engine-strict": true,
   "engines": {
-    "node": ">=16.14.0"
+    "node": ">=16.16.0"
   },
   "devDependencies": {
     "c8": "^7.3.5",
     "coveralls": "^3.1.0",
-    "mocha": "^9.1.3",
+    "mocha": "^10.2.0",
     "sinon": "^6.3.5"
   }
 }
