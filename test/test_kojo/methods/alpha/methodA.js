@@ -7,6 +7,7 @@ export default async function MethodA() {
     const { alpha, bravo } = kojo.methods;
 
     // some logger tests
+    logger.setCustomTag('req-43');
     logger.debug();
     logger.debug('object test', {key: 'value', obj: {key: 'value'}});
 

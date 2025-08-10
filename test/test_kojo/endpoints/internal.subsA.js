@@ -13,7 +13,7 @@ export default async (kojo, logger) => {
     await sleep(15);
     kojo.on('aCalled', (param) => {
         assert(param === 'boo' );
-        logger.addTag('req-1');
+        logger.setCustomTag('req-1');
         logger.info('got alpha.aCalled with', param);
         logger.debug('ending subscriber');
     });
