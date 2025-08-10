@@ -1,3 +1,8 @@
+[8.4.1] - 2025-08-10
+--------------------
+- [x] Refactor logger to use `setCustomTag` instead of `addTag` and update related test cases
+
+
 [8.4.0] - 2025-08-10
 --------------------
 - [x] Add `addTag` method to logger and update test case
