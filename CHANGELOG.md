@@ -1,3 +1,8 @@
+[8.4.0] - 2025-08-10
+--------------------
+- [x] Add `addTag` method to logger and update test case
+
+
 [8.2.1] - 2022-02-20
 --------------------
 - [x] Update Node engine version @ `.github`
