@@ -1,3 +1,20 @@
+[9.0.2] - 2025-11-11
+--------------------
+
+### 📚 DOCUMENTATION
+
+- **Complete README overhaul** for v9.0.0
+  - Update all examples from `services/` to `functions/`
+  - Update all code examples from `kojo.services.*` to `kojo.functions.*`
+  - Add "What's New in v9.0.0" section with migration notice
+  - Add root-level function examples and documentation
+  - Add Configuration section with flexible naming examples
+  - Add HTTP route and internal event subscriber examples
+  - Modernize troubleshooting section
+  - Remove outdated Seneca comparison
+- **API docs regenerated** from JSDoc (shows `functionsDir` and deprecated `serviceDir`)
+- **Add jsdoc-to-markdown** to devDependencies for future doc generation
+
 [9.0.1] - 2025-11-11
 --------------------
 
