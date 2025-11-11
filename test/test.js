@@ -8,7 +8,7 @@ describe('a regular kojo', () => {
     const methodAcalledSpy = sinon.spy();
     const options = {
         subsDir: './test/test_kojo/endpoints',
-        serviceDir: './test/test_kojo/methods',
+        functionsDir: './test/test_kojo/methods',
         name: 'regular',
         icon: '🚩',
         logLevel: 'debug',
@@ -82,7 +82,19 @@ describe('a regular kojo', () => {
             assert.strictEqual(error.message, 'Expected failure occurred');
             done();
         }
-    })
+    });
+
+    it('loads root-level service functions', async () => {
+        const result = await kojo.methods.rootLevelFunction();
+        assert.strictEqual(result, 'root-level-result');
+    });
+
+    it('loads root-level function alongside folder-based services', async () => {
+        // Verify folder-based services still work
+        assert(typeof kojo.methods.alpha.methodA === 'function');
+        // Verify root-level function is loaded
+        assert(typeof kojo.methods.rootLevelFunction === 'function');
+    });
 
 });
 
@@ -91,7 +103,7 @@ describe('broken endpoints kojo', () => {
     const options = {
         name: 'broken',
         subsDir: './test/broken_endpoints_kojo/endpoints',
-        serviceDir: './test/broken_endpoints_kojo/services'
+        functionsDir: './test/broken_endpoints_kojo/services'
     };
 
     it('throws on non-existent subscribers directory', async () => {
@@ -113,7 +125,7 @@ describe('broken services kojo', () => {
     const options = {
         name: 'broken',
         subsDir: './test/broken_kojo/subscribers',
-        serviceDir: './test/broken_kojo/services'
+        functionsDir: './test/broken_kojo/services'
     };
 
     it('throws on non-existent service directory', async () => {
@@ -132,7 +144,7 @@ describe('nameless kojo', () => {
 
     const options = {
         subsDir: './test/test_kojo/endpoints',
-        serviceDir: './test/test_kojo/methods'
+        functionsDir: './test/test_kojo/methods'
     };
 
     it('is assigned a default name', async () => {
@@ -147,7 +159,7 @@ describe('service-less kojo', () => {
 
     const options = {
         name: 'no-serv',
-        serviceDir: './test/service-less/subs'
+        functionsDir: './test/service-less/subs'
     };
 
     it('initializes normally', async () => {
@@ -163,5 +175,41 @@ describe('empty kojo', () => {
         const kojo = new Kojo({name: 'empty'});
         await kojo.ready();
     })
+
+});
+
+describe('backward compatibility', () => {
+
+    it('supports deprecated serviceDir option', async () => {
+        const options = {
+            subsDir: './test/test_kojo/endpoints',
+            serviceDir: './test/test_kojo/methods',  // Using old name
+            name: 'backward-compat',
+            icon: '🔙',
+            logLevel: 'silent'  // Silence logs for this test
+        };
+        const kojo = new Kojo(options);
+        await kojo.ready();
+
+        // Should work exactly like functionsDir
+        assert(typeof kojo.methods.alpha.methodA === 'function');
+        const result = await kojo.methods.rootLevelFunction();
+        assert.strictEqual(result, 'root-level-result');
+    });
+
+    it('prefers functionsDir over serviceDir when both provided', async () => {
+        const options = {
+            subsDir: './test/test_kojo/endpoints',
+            serviceDir: './test/broken_kojo/services',  // Wrong path
+            functionsDir: './test/test_kojo/methods',   // Correct path - should win
+            name: 'prefer-new',
+            logLevel: 'silent'
+        };
+        const kojo = new Kojo(options);
+        await kojo.ready();
+
+        // Should use functionsDir, not serviceDir
+        assert(typeof kojo.methods.alpha.methodA === 'function');
+    });
 
 });

@@ -34,7 +34,8 @@ class Kojo extends EventEmitter {
      *
      * @param options {Object} - configuration options
      * @param options.subsDir {string} - subscribers directory (relative to project root)
-     * @param options.serviceDir {string} - service directory (relative to project root)
+     * @param options.functionsDir {string} - functions directory (relative to project root, default: 'functions', alternative: 'ops')
+     * @param options.serviceDir {string} - DEPRECATED: use functionsDir instead
      * @param options.parentPackage {Object} - parent package, Kojo is running from. Needed to just display
      *                                         parent package name version. Default is current project package.json
      * @param options.name {string} - Kojo name (default `工場`)
@@ -48,7 +49,7 @@ class Kojo extends EventEmitter {
 
         const defaults = {
             subsDir: 'subscribers',
-            serviceDir: 'services',
+            functionsDir: 'functions',
             parentPackage: null,
             name: '工場',
             icon: '☢',
@@ -56,6 +57,13 @@ class Kojo extends EventEmitter {
             loggerIdSuffix: false
         };
         this._options = options;
+
+        // Backward compatibility: support deprecated serviceDir option
+        if (options.serviceDir && !options.functionsDir) {
+            process.stderr.write('\x1b[33mWarning: "serviceDir" is deprecated. Please use "functionsDir" instead.\x1b[0m\n');
+            options.functionsDir = options.serviceDir;
+        }
+
         /**
          * Kojo instance configuration
          *
@@ -118,31 +126,54 @@ class Kojo extends EventEmitter {
         process.stdout.write(`  ${icon} ${kojo.id}  |  ${parentPackage.name}@${parentPackage.version}  |  ${kojoPackage.name}@${kojoPackage.version}\n`);
         process.stdout.write('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n');
 
-        // SERVICES
+        // FUNCTIONS
 
-        const servicesDir = path.join(process.cwd(), kojo.config.serviceDir);
-        const servicesAlias = path.basename(kojo.config.serviceDir);
-        kojo[servicesAlias] = {};
+        const functionsDir = path.join(process.cwd(), kojo.config.functionsDir);
+        const functionsAlias = path.basename(kojo.config.functionsDir);
+        kojo[functionsAlias] = {};
 
         try {
-            const serviceDirs = await readDir(servicesDir);
-            process.stdout.write(`    ${icon} loading ${servicesAlias}...`);
+            const fnEntries = await readDir(functionsDir);
+            process.stdout.write(`    ${icon} loading ${functionsAlias}...`);
 
-            for (const srvDir of serviceDirs) {
-                const servicePath = path.join(servicesDir, srvDir);
+            // Load folder-based functions
+            for (const entry of fnEntries) {
+                const entryPath = path.join(functionsDir, entry);
 
-                if (! fs.lstatSync(servicePath).isDirectory())
+                if (! fs.lstatSync(entryPath).isDirectory())
                     continue;
 
-                const serviceName = path.basename(servicePath);
-                const service = new Service(serviceName, servicePath, kojo);
-                kojo[servicesAlias][serviceName] = await service.ready();
+                const fnGroupName = path.basename(entryPath);
+                const service = new Service(fnGroupName, entryPath, kojo);
+                kojo[functionsAlias][fnGroupName] = await service.ready();
             }
 
-            process.stdout.write(` done (${Object.keys(kojo[servicesAlias]).length})\n`);
+            // Load root-level functions
+            for (const entry of fnEntries) {
+                const entryPath = path.join(functionsDir, entry);
+
+                // Skip directories
+                if (fs.lstatSync(entryPath).isDirectory())
+                    continue;
+
+                // Skip non-JS files
+                if (! entry.endsWith('.js'))
+                    continue;
+
+                const functionName = path.basename(entry, '.js');
+
+                // Skip test files
+                if (functionName === 'test')
+                    continue;
+
+                const { default: fn } = await import(url.pathToFileURL(entryPath));
+                kojo[functionsAlias][functionName] = Service.wrapFunction(fn, kojo, [ functionName ]);
+            }
+
+            process.stdout.write(` done (${Object.keys(kojo[functionsAlias]).length})\n`);
         } catch (error) {
-            if (error.code === 'ENOENT' && error.path === servicesDir && !kojo._options.serviceDir)
-                process.stdout.write(`    ${icon} skipping ${servicesAlias}\n`);
+            if (error.code === 'ENOENT' && error.path === functionsDir && !kojo._options.functionsDir)
+                process.stdout.write(`    ${icon} skipping ${functionsAlias}\n`);
             else {
                 process.stderr.write(error.message);
                 throw error;
@@ -183,7 +214,7 @@ class Kojo extends EventEmitter {
 
         process.stdout.write(`    ${icon} kojo "${kojo.name}" ready [${process.env.NODE_ENV}]\n`);
         process.stdout.write('*************************************************************\n');
-        return [ Object.keys(kojo[servicesAlias]).length, kojo._subscribers.length ];
+        return [ Object.keys(kojo[functionsAlias]).length, kojo._subscribers.length ];
     }
 
     /**

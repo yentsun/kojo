@@ -1,3 +1,63 @@
+[9.0.0] - 2025-11-11
+--------------------
+
+### 🚨 BREAKING CHANGES
+
+- **Default directory renamed**: `services/` → `functions/`
+  - If you relied on the default, your app will look for `functions/` directory
+  - **Fix**: Rename your `services/` directory to `functions/`
+  - **OR**: Explicitly set `functionsDir: 'services'` in config
+
+- **Config option renamed**: `serviceDir` → `functionsDir`
+  - Old option still works but shows deprecation warning
+  - **Recommended**: Update config to use `functionsDir`
+
+### ✨ NEW FEATURES
+
+- **Root-level functions**: You can now place functions directly in the functions directory
+  - `functions/functionName/method.js` → `kojo.functions.functionName.method()` (existing)
+  - `functions/standalone.js` → `kojo.functions.standalone()` (NEW!)
+  - Both styles work simultaneously
+
+- **Flexible naming**: Directory name determines API property name
+  - `functionsDir: 'functions'` → `kojo.functions.*` (default)
+  - `functionsDir: 'ops'` → `kojo.ops.*` (alternative)
+  - `functionsDir: 'services'` → `kojo.services.*` (backward compatible)
+
+### 📚 MIGRATION GUIDE
+
+**Option 1: Rename directory (recommended)**
+```bash
+mv services functions
+```
+
+**Option 2: Keep old directory name**
+```js
+new Kojo({
+    functionsDir: 'services',  // Explicitly set to 'services'
+    // ... other options
+})
+```
+
+**Option 3: Migrate gradually**
+```js
+// Still works, shows deprecation warning
+new Kojo({
+    serviceDir: 'services',  // ⚠️ DEPRECATED
+})
+
+// New way (no warning)
+new Kojo({
+    functionsDir: 'services',  // ✅ Recommended
+})
+```
+
+### 📖 RATIONALE
+
+- "Services" implies running processes, but these are callable functions
+- "Functions" better describes the actual behavior
+- Root-level support reduces unnecessary nesting for simple functions
+
 [8.4.1] - 2025-08-10
 --------------------
 - [x] Refactor logger to use `setCustomTag` instead of `addTag` and update related test cases

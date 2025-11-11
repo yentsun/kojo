@@ -58,31 +58,43 @@ npm run docs    # Generate API docs from JSDoc comments using jsdoc2md
 ### Directory Structure
 
 ```
-services/           # Service directories (each directory = one service)
-├── serviceName/    # Service name
+functions/          # Functions directory (configurable, alternative: 'ops')
+├── functionName/   # Grouped functions (directory-based)
 │   ├── method1.js  # Each file = one method
 │   ├── method2.js
 │   └── test.js     # Ignored - for unit tests
+└── standalone.js   # Root-level function (NEW: single function per file)
 
 subscribers/        # Subscriber files (initialized once at startup)
 ├── event.name.js   # Name should reflect the event/route handled
 └── internal.*.js   # Convention for internal event handlers
 ```
 
-### Service Methods
+### Functions
 
-Service methods export an async function with context binding:
+Functions export an async function with context binding. Two styles are supported:
 
+**Directory-based (grouped functions):**
 ```js
+// functions/serviceName/methodName.js
 export default async function (params) {
     const [kojo, logger] = this;  // Context provided by framework
     // ... implementation
 }
 ```
+Access: `kojo.functions.serviceName.methodName()`
 
-**Critical**: Methods must use `function() {}` syntax, NOT arrow functions `() => {}`, to receive context.
+**Root-level (standalone functions):**
+```js
+// functions/standaloneName.js
+export default async function (params) {
+    const [kojo, logger] = this;  // Context provided by framework
+    // ... implementation
+}
+```
+Access: `kojo.functions.standaloneName()`
 
-Methods are accessible via: `kojo.services.serviceName.methodName()`
+**Critical**: Functions must use `function() {}` syntax, NOT arrow functions `() => {}`, to receive context.
 
 ### Subscribers
 
@@ -116,7 +128,7 @@ When initializing Kojo:
 ```js
 new Kojo({
     subsDir: 'subscribers',      // Subscribers directory (default)
-    serviceDir: 'services',      // Services directory (default)
+    functionsDir: 'functions',   // Functions directory (default, alternative: 'ops')
     name: '工場',                // Instance name (default)
     icon: '☢',                   // Display icon (default)
     logLevel: 'debug',           // Log level (default)
@@ -125,14 +137,16 @@ new Kojo({
 })
 ```
 
+**Note**: The directory name determines the property name (e.g., `functionsDir: 'ops'` → `kojo.ops.*`)
+
 ## Logic Placement Strategy
 
-**Rule of thumb**: Place logic in subscribers when in doubt. Move to services when:
+**Rule of thumb**: Place logic in subscribers when in doubt. Move to functions when:
 - Code starts repeating across subscribers
 - Logic becomes complex and needs to be DRY
-- Functionality needs to be reusable
+- Functionality needs to be reusable across multiple subscribers
 
-Subscribers should be the single entry point for events, making it easy to understand what the microservice handles by examining the subscribers directory.
+Subscribers should be the single entry point for events, making it easy to understand what the microservice handles by examining the subscribers directory. Functions contain the reusable business logic.
 
 ## Important Notes
 
