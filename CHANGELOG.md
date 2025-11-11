@@ -1,3 +1,13 @@
+[9.0.1] - 2025-11-11
+--------------------
+
+### 🔒 SECURITY
+
+- Update mocha from 9.1.3 to 11.7.5 (fixes nanoid and serialize-javascript vulnerabilities)
+- Replace deprecated coveralls npm package with GitHub Action (fixes critical request, form-data, and tough-cookie vulnerabilities)
+- Update GitHub Actions to v4 (checkout and setup-node)
+- All npm audit vulnerabilities resolved (0 vulnerabilities)
+
 [9.0.0] - 2025-11-11
 --------------------
 
