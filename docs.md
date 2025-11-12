@@ -37,7 +37,12 @@ Create Kojo instance
 | options.loggerIdSuffix | <code>boolean</code> | shall logger use Kojo ID prefix? (default: false) |
 
 **Example**  
-```jsconst kojo = new Kojo({    name: 'users',    icon: 👥});```
+```js
+const kojo = new Kojo({
+    name: 'users',
+    icon: 👥
+});
+```
 <a name="module_kojo--Kojo+config"></a>
 
 #### kojo.config : <code>Object</code>
@@ -51,7 +56,9 @@ Kojo instance unique ID
 
 **Kind**: instance property of [<code>Kojo</code>](#exp_module_kojo--Kojo)  
 **Example**  
-```user-service.zM8n6```
+```
+user-service.zM8n6
+```
 <a name="module_kojo--Kojo+name"></a>
 
 #### kojo.name : <code>string</code>
@@ -59,20 +66,28 @@ Kojo name
 
 **Kind**: instance property of [<code>Kojo</code>](#exp_module_kojo--Kojo)  
 **Example**  
-```user-service```
+```
+user-service
+```
 <a name="module_kojo--Kojo+ready"></a>
 
 #### kojo.ready() ⇒ <code>Promise</code>
-Bootstrap Kojo instance. Resolves after every service andsubscriber has been loaded. Always `await` for it before using Kojoinstance.
+Bootstrap Kojo instance. Resolves after every service and
+subscriber has been loaded. Always `await` for it before using Kojo
+instance.
 
 **Kind**: instance method of [<code>Kojo</code>](#exp_module_kojo--Kojo)  
 **Fulfil**: <code>Array</code> - 'tuple' with services and endpoints count  
 **Example**  
-```jsconst kojo = new Kojo(options);await kojo.ready();```
+```js
+const kojo = new Kojo(options);
+await kojo.ready();
+```
 <a name="module_kojo--Kojo+set"></a>
 
 #### kojo.set(key, value)
-Set key/value to the global context. Anything goes here - DB, transport connections,configuration objects, etc. This is also called setting an 'extra'.
+Set key/value to the global context. Anything goes here - DB, transport connections,
+configuration objects, etc. This is also called setting an 'extra'.
 
 **Kind**: instance method of [<code>Kojo</code>](#exp_module_kojo--Kojo)  
 
@@ -82,7 +97,10 @@ Set key/value to the global context. Anything goes here - DB, transport connecti
 | value | <code>\*</code> | value of any type |
 
 **Example**  
-```jsconst client = await MongoClient.connect(config.mongodb.url);kojo.set('mongo', client);```
+```js
+const client = await MongoClient.connect(config.mongodb.url);
+kojo.set('mongo', client);
+```
 <a name="module_kojo--Kojo+get"></a>
 
 #### kojo.get([key]) ⇒ <code>\*</code>
@@ -95,4 +113,7 @@ Get (previously `set`) value from state.
 | [key] | <code>string</code> | key string (optional). If omitted, returns state object. |
 
 **Example**  
-```jsconst client = await MongoClient.connect(config.mongodb.url);kojo.get('mongo');```
+```js
+// previously set somewhere in your app: kojo.set('mongo', client)
+const client = kojo.get('mongo');
+```
