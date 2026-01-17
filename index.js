@@ -52,7 +52,7 @@ class Kojo extends EventEmitter {
             functionsDir: 'functions',
             parentPackage: null,
             name: '工場',
-            icon: '☢',
+            icon: '',
             logLevel: 'debug',
             loggerIdSuffix: false
         };
@@ -122,8 +122,10 @@ class Kojo extends EventEmitter {
 
         const { icon, logLevel, parentPackage } = kojo.config;
 
+        const iconPrefix = icon ? `${icon} ` : '';
+
         process.stdout.write('\n*************************************************************\n');
-        process.stdout.write(`  ${icon} ${kojo.id}  |  ${parentPackage.name}@${parentPackage.version}  |  ${kojoPackage.name}@${kojoPackage.version}\n`);
+        process.stdout.write(`  ${iconPrefix}${kojo.id}  |  ${parentPackage.name}@${parentPackage.version}  |  ${kojoPackage.name}@${kojoPackage.version}\n`);
         process.stdout.write('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n');
 
         // FUNCTIONS
@@ -134,7 +136,7 @@ class Kojo extends EventEmitter {
 
         try {
             const fnEntries = await readDir(functionsDir);
-            process.stdout.write(`    ${icon} loading ${functionsAlias}...`);
+            process.stdout.write(`    ${iconPrefix}loading ${functionsAlias}...`);
 
             // Load folder-based functions
             for (const entry of fnEntries) {
@@ -173,7 +175,7 @@ class Kojo extends EventEmitter {
             process.stdout.write(` done (${Object.keys(kojo[functionsAlias]).length})\n`);
         } catch (error) {
             if (error.code === 'ENOENT' && error.path === functionsDir && !kojo._options.functionsDir)
-                process.stdout.write(`    ${icon} skipping ${functionsAlias}\n`);
+                process.stdout.write(`    ${iconPrefix}skipping ${functionsAlias}\n`);
             else {
                 process.stderr.write(error.message);
                 throw error;
@@ -186,7 +188,7 @@ class Kojo extends EventEmitter {
         try {
             const subscriberFiles = await readDir(subsDir);
             const subsAlias = path.basename(kojo.config.subsDir);
-            process.stdout.write(`    ${icon} loading ${subsAlias}...`);
+            process.stdout.write(`    ${iconPrefix}loading ${subsAlias}...`);
 
             await Promise.all(subscriberFiles.map(async (subscriberFile) => {
                     const subName = path.basename(subscriberFile, '.js');
@@ -205,14 +207,14 @@ class Kojo extends EventEmitter {
             process.stdout.write(` done (${kojo._subscribers.length})\n`);
         } catch (error) {
             if (error.code === 'ENOENT' && error.path === subsDir && !kojo._options.subsDir) {
-                process.stdout.write(`    ${icon} skipping subscribers\n`);
+                process.stdout.write(`    ${iconPrefix}skipping subscribers\n`);
             } else {
                 process.stderr.write(error.message);
                 throw error;
             }
         }
 
-        process.stdout.write(`    ${icon} kojo "${kojo.name}" ready [${process.env.NODE_ENV}]\n`);
+        process.stdout.write(`    ${iconPrefix}kojo "${kojo.name}" ready [${process.env.NODE_ENV}]\n`);
         process.stdout.write('*************************************************************\n');
         return [ Object.keys(kojo[functionsAlias]).length, kojo._subscribers.length ];
     }
