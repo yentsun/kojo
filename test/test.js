@@ -1,11 +1,10 @@
 import assert from 'assert';
-import sinon from 'sinon';
+import { describe, it, before } from 'node:test';
 import Kojo from'../index.js';
 
 
 describe('a regular kojo', () => {
 
-    const methodAcalledSpy = sinon.spy();
     const options = {
         subsDir: './test/test_kojo/endpoints',
         functionsDir: './test/test_kojo/methods',
@@ -23,15 +22,12 @@ describe('a regular kojo', () => {
         await kojo.ready();
     });
 
-    it('loads services available to each other', async () => {
+    it('loads services and emits events', async (t) => {
+        const methodAcalledSpy = t.mock.fn();
         kojo.on('aCalled', methodAcalledSpy);
         const result = await kojo.methods.alpha.methodA([]);
         assert.strictEqual(result, 'bravo');
-    });
-
-    it('allows a service to emit events', (done) => {
-        assert(methodAcalledSpy.calledOnce);
-        done();
+        assert.strictEqual(methodAcalledSpy.mock.calls.length, 1);
     });
 
     it('loads config and extras', async () => {
@@ -70,17 +66,15 @@ describe('a regular kojo', () => {
         }
     });
 
-    it('allows a method to be a sync function', (done) => {
+    it('allows a method to be a sync function', () => {
         assert.strictEqual(kojo.methods.bravo.syncMethod('Im ', 'sync'), 'Im sync');
-        done();
     });
 
-    it('handles errors from sync method', (done) => {
+    it('handles errors from sync method', () => {
         try {
             kojo.methods.bravo.syncFailingMethod();
         } catch (error) {
             assert.strictEqual(error.message, 'Expected failure occurred');
-            done();
         }
     });
 
