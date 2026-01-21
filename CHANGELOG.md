@@ -1,3 +1,15 @@
+[9.0.4] - 2026-01-21
+--------------------
+
+### 🔧 INTERNAL
+
+- **Migrate to Node.js built-in test runner** - Replace mocha with native `node --test` (#41)
+- Remove sinon dependency (no longer needed with native test runner)
+
+### 📚 DOCUMENTATION
+
+- **Expand API docs** to include Logger class with full JSDoc documentation (#42)
+
 [9.0.2] - 2025-11-11
 --------------------
 
