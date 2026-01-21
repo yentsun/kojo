@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node --test --experimental-json-modules",
-    "docs": "jsdoc2md --template ./docs_template.hbs ./*.js > docs.md"
+    "docs": "jsdoc2md --template ./docs_template.hbs ./*.js ./lib/Logger.js > docs.md"
   },
   "repository": {
     "type": "git",

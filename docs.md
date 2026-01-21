@@ -114,6 +114,100 @@ Get (previously `set`) value from state.
 
 **Example**  
 ```js
-// previously set somewhere in your app: kojo.set('mongo', client)
-const client = kojo.get('mongo');
+const client = await MongoClient.connect(config.mongodb.url);
+kojo.get('mongo');
 ```
+
+    
+* [logger](#module_logger)
+    * [module.exports](#exp_module_logger--module.exports) ⏏
+        * [new module.exports(options)](#new_module_logger--module.exports_new)
+        * [.debug(...args)](#module_logger--module.exports+debug) ⇒ <code>undefined</code>
+        * [.warn(...args)](#module_logger--module.exports+warn) ⇒ <code>undefined</code>
+        * [.error(...args)](#module_logger--module.exports+error) ⇒ <code>undefined</code>
+        * [.info(...args)](#module_logger--module.exports+info) ⇒ <code>undefined</code>
+        * [.setCustomTag(tag)](#module_logger--module.exports+setCustomTag) ⇒ <code>void</code>
+
+<a name="exp_module_logger--module.exports"></a>
+
+### module.exports ⏏
+Kojo logger class
+
+**Kind**: Exported class  
+<a name="new_module_logger--module.exports_new"></a>
+
+#### new module.exports(options)
+Create Logger instance
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>object</code> | configuration options |
+| options.id | <code>string</code> | server instance id |
+| options.icon | <code>object</code> | logger icon |
+| options.level | <code>object</code> | logger level (default is `debug`) |
+| options.tagSeparator | <code>string</code> | character to joint tagPieces with |
+| options.tagPieces | <code>array</code> | array of values to form the tag from |
+| options.color | <code>string</code> | special `chalk` color to use for this service method (default: white) |
+
+**Example**  
+```js
+const logger = new Logger({icon, id, level, tagSeparator, tagPieces: [service, method], color: 'bold'})
+```
+<a name="module_logger--module.exports+debug"></a>
+
+#### module.exports.debug(...args) ⇒ <code>undefined</code>
+Write a debug entry
+
+**Kind**: instance method of [<code>module.exports</code>](#exp_module_logger--module.exports)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ...args | <code>string</code> | arguments to output with the entry's message |
+
+<a name="module_logger--module.exports+warn"></a>
+
+#### module.exports.warn(...args) ⇒ <code>undefined</code>
+Write a warning entry. Will be rendered to 'stdout'.
+Warn messages are rendered regardless of logging level (except for 'silent').
+
+**Kind**: instance method of [<code>module.exports</code>](#exp_module_logger--module.exports)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ...args | <code>string</code> | arguments to output with the entry's message |
+
+<a name="module_logger--module.exports+error"></a>
+
+#### module.exports.error(...args) ⇒ <code>undefined</code>
+Write an error entry. Will be rendered to 'stderr'
+
+**Kind**: instance method of [<code>module.exports</code>](#exp_module_logger--module.exports)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ...args | <code>string</code> | arguments to output with the entry's message |
+
+<a name="module_logger--module.exports+info"></a>
+
+#### module.exports.info(...args) ⇒ <code>undefined</code>
+Write an info entry
+
+**Kind**: instance method of [<code>module.exports</code>](#exp_module_logger--module.exports)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| ...args | <code>string</code> | arguments to output with the entry's message |
+
+<a name="module_logger--module.exports+setCustomTag"></a>
+
+#### module.exports.setCustomTag(tag) ⇒ <code>void</code>
+Sets a custom tag to the specified value.
+
+**Kind**: instance method of [<code>module.exports</code>](#exp_module_logger--module.exports)  
+**Returns**: <code>void</code> - - Does not return a value.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| tag | <code>string</code> | The custom tag to be set. |
+
